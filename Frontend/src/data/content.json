@@ -1,0 +1,27 @@
+{
+  "homepage": {
+    "hero": {
+      "title": "StudyHub - Your Ultimate Study Companion",
+      "subtitle": "Organize, plan, and track your academic journey with our comprehensive study management platform",
+      "cta": "Start Planning Today"
+    },
+    "features": [
+      {
+        "title": "Smart Task Management",
+        "description": "Create, organize, and prioritize your study tasks with our intuitive interface"
+      },
+      {
+        "title": "Interactive Calendar",
+        "description": "Visualize your study schedule with weekly and monthly calendar views"
+      },
+      {
+        "title": "Progress Tracking",
+        "description": "Monitor your academic progress with detailed analytics and completion rates"
+      },
+      {
+        "title": "Priority System",
+        "description": "Color-coded priority levels help you focus on what matters most"
+      }
+    ]
+  }
+}
