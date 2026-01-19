@@ -17,7 +17,18 @@ const App = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={1500} />
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        toastClassName="toast-responsive"
+        bodyClassName="toast-body-responsive"
+      />
 
       <div className="pt-10">
         <Navbar />

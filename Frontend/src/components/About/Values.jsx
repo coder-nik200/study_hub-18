@@ -28,8 +28,8 @@ const Values = () => {
           {values.map((value, i) => (
             <div
               key={i}
-              className="rounded-2xl bg-white p-10 shadow-lg transition-all duration-300 ease-out
-              hover:-translate-y-1 hover:shadow-xl border-l-4 border-indigo-600"
+              className="rounded-2xl bg-white p-10 shadow-lg border-l-4 border-indigo-600
+                transition-all duration-300 ease-out lg:hover:-translate-y-1 lg:hover:shadow-xl active:-translate-y-1 active:shadow-xl"
             >
               <h3 className="mb-4 text-2xl font-semibold text-indigo-600">
                 {value.title}

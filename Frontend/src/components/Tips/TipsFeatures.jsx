@@ -42,23 +42,28 @@ const TipsFeatures = () => {
         return (
           <div
             key={i}
-            className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-10 shadow-xl hover:shadow-2xl
-             transition-transform duration-300 ease-out
-             hover:-translate-y-3 hover:scale-[1.02]
-             before:absolute before:top-0 before:left-1/2
-             before:h-1 before:w-full
-             before:-translate-x-1/2
-             before:scale-x-0 before:origin-center
-             before:bg-gradient-to-r before:from-indigo-500 before:to-purple-600
-             before:transition-transform before:duration-300
-             hover:before:scale-x-100"
+            className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-10 shadow-xl
+              transition-transform duration-300 ease-out
+
+              lg:hover:-translate-y-3 lg:hover:scale-[1.02]
+              lg:hover:shadow-2xl
+
+              before:absolute before:top-0 before:left-1/2
+              before:h-1 before:w-full
+              before:-translate-x-1/2
+              before:scale-x-0 before:origin-center
+              before:bg-gradient-to-r before:from-indigo-500 before:to-purple-600
+              before:transition-transform before:duration-300
+
+              lg:hover:before:scale-x-100
+              active:before:scale-x-100" // mobile tap effect
           >
             {/* ICON */}
             <div
               className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl
-                         bg-gradient-to-br from-blue-600 to-purple-600 text-white
-                         transition-transform duration-300
-                         group-hover:scale-110 group-hover:rotate-6"
+                        bg-gradient-to-br from-blue-600 to-purple-600 text-white
+                        transition-transform duration-300
+                        lg:group-hover:scale-110 lg:group-hover:rotate-6" // icon only scales on desktop
             >
               <Icon size={32} />
             </div>

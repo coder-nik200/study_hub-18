@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+/* ========== RESPONSIVE BASE STYLES ========== */
+* {
+  @apply transition-colors duration-200;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-gray-900;
+}
+
+/* ========== COMPONENT STYLES ========== */
 @layer components {
+  /* Navigation Links */
   .nav-link {
-    @apply text-gray-600 font-medium relative transition hover:text-indigo-600;
+    @apply text-gray-600 font-medium relative transition-all duration-200 hover:text-indigo-600 active:text-indigo-700 active:scale-95;
   }
 
   .nav-link::after {
@@ -10,15 +25,25 @@
     @apply absolute left-0 -bottom-1 w-0 h-[2px] bg-indigo-600 transition-all duration-300;
   }
 
-  .nav-link:hover::after {
+  .nav-link:hover::after,
+  .nav-link:active::after {
     @apply w-full;
   }
 
+  /* Mobile Navigation Links */
   .mobile-link {
-    @apply text-gray-700 font-medium text-lg hover:text-indigo-600 transition;
+    @apply text-gray-700 font-medium text-lg hover:text-indigo-600 active:text-indigo-700 active:bg-indigo-100 active:scale-95 rounded-md px-4 py-2 transition-all duration-200;
+  }
+
+  /* Link Hover Effects */
+  .link-hover {
+    @apply transition-all duration-200;
+    @apply hover:text-indigo-600 hover:-translate-y-0.5;
+    @apply active:text-indigo-700 active:scale-95;
   }
 }
 
+/* ========== ANIMATIONS ========== */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -27,5 +52,111 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========== TOUCH-FRIENDLY UTILITIES ========== */
+@supports (touch-action: manipulation) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+}
+
+/* Prevent zoom on double-tap */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    @apply active:scale-95;
+  }
+}
+
+/* ========== RESPONSIVE SPACING ========== */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+
+  button {
+    @apply min-h-[44px];
+  }
+}
+
+/* ===== Ultra Compact Toast (Small Devices) ===== */
+
+@media (max-width: 640px) {
+  .toast-responsive {
+    width: 50vw !important; /* slightly narrower */
+    min-height: auto !important;
+    font-size: 0.72rem; /* smaller text */
+    padding: 5px 8px; /* very tight padding */
+    border-radius: 7px;
+  }
+
+  .toast-body-responsive {
+    padding: 0;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .Toastify__toast-container {
+    width: 100vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+    top: 8px !important;
+  }
+
+  .Toastify__toast-container--top-right {
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  /* Smaller close button */
+  .Toastify__close-button {
+    transform: scale(0.75);
+  }
+
+  /* Smaller icons */
+  .Toastify__toast svg {
+    width: 14px;
+    height: 14px;
   }
 }

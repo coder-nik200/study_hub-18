@@ -46,54 +46,67 @@ const TaskList = ({ tasks, onToggleComplete, onEditTask, onDeleteTask }) => {
 
   return (
     <div className="bg-white rounded-xl shadow overflow-hidden">
-      {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-5 p-5 bg-gray-50 border-b">
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-gray-800">Filter:</label>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-500 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="all">All Tasks</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
+      {/* ================= FILTERS ================= */}
+      <div className="p-5 bg-gray-50 border-b">
+        <div className="flex items-center gap-4 flex-nowrap md:flex-row">
+          {/* Filter */}
+          <div className="flex items-center gap-2 flex-1 md:flex-none">
+            <label className="text-sm font-semibold text-gray-800 whitespace-nowrap">
+              Filter:
+            </label>
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="w-full md:w-auto px-3 py-2 border border-gray-500 rounded-md text-sm
+                focus:outline-none focus:ring-2 focus:ring-indigo-500
+                hover:border-indigo-500 transition"
+            >
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
 
-        {/* Sort By */}
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-gray-800">
-            Sort by:
-          </label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-gray-500 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="dueDate">Due Date</option>
-            <option value="priority">Priority</option>
-            <option value="created">Created</option>
-          </select>
+          {/* Sort */}
+          <div className="flex items-center gap-2 flex-1 md:flex-none">
+            <label className="text-sm font-semibold text-gray-800 whitespace-nowrap">
+              Sort:
+            </label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full md:w-auto px-3 py-2 border border-gray-500 rounded-md text-sm
+                focus:outline-none focus:ring-2 focus:ring-indigo-500
+                hover:border-indigo-500 transition"
+            >
+              <option value="dueDate">Due Date</option>
+              <option value="priority">Priority</option>
+              <option value="created">Created</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Task List */}
+      {/* ================= TASK LIST ================= */}
       <div className="max-h-[600px] overflow-y-auto">
         {sortedTasks.map((task) => (
           <div
             key={task._id}
-            className={`flex flex-col md:flex-row gap-4 p-5 border-b transition
+            className={`flex gap-4 p-5 border-b transition
               ${task.completed ? "opacity-70" : ""}
-              ${isOverdue(task) ? "bg-red-50 border-l-4 border-red-500" : "hover:bg-gray-50"}
+              ${
+                isOverdue(task)
+                  ? "bg-red-50 border-l-4 border-red-500"
+                  : "hover:bg-gray-50"
+              }
             `}
           >
-            {/* Checkbox */}
+            {/* Checkbox (always front) */}
             <input
               type="checkbox"
               checked={task.completed}
               onChange={() => onToggleComplete(task)}
-              className="w-4 h-4 mt-1 accent-indigo-600 cursor-pointer"
+              className="mt-1 w-4 h-4 accent-indigo-600 cursor-pointer shrink-0"
             />
 
             {/* Content */}
@@ -142,10 +155,12 @@ const TaskList = ({ tasks, onToggleComplete, onEditTask, onDeleteTask }) => {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-2 self-end md:self-start">
+            <div className="flex gap-2 self-start">
               <button
                 onClick={() => onEditTask(task)}
-                className="w-9 h-9 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-indigo-600 hover:text-white transition"
+                className="w-9 h-9 flex items-center justify-center rounded-md
+                  bg-gray-100 text-gray-600
+                  hover:bg-indigo-600 hover:text-white transition"
                 title="Edit"
               >
                 <Edit2 size={16} />
@@ -153,7 +168,9 @@ const TaskList = ({ tasks, onToggleComplete, onEditTask, onDeleteTask }) => {
 
               <button
                 onClick={() => onDeleteTask(task._id)}
-                className="w-9 h-9 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-red-600 hover:text-white transition"
+                className="w-9 h-9 flex items-center justify-center rounded-md
+                  bg-gray-100 text-gray-600
+                  hover:bg-red-600 hover:text-white transition"
                 title="Delete"
               >
                 <Trash2 size={16} />

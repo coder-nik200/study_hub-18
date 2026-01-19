@@ -17,20 +17,20 @@ const Preview = () => {
 
           {/* Showcase */}
           <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-16 items-center">
-            {/* Desktop Preview */}
+            {/* ================= DESKTOP PREVIEW ================= */}
             <div className="flex flex-col items-center gap-5">
               <div className="relative rounded-2xl bg-neutral-900 p-5 pb-10 shadow-2xl max-w-[600px] w-full">
                 <div className="bg-white rounded-xl overflow-hidden">
                   <div className="p-5">
                     {/* Header */}
-                    <div className="border-b pb-4 mb-5 flex gap-5">
-                      <div className="px-4 py-2 rounded-md bg-indigo-600 text-white font-medium">
+                    <div className="border-b border-slate-200 pb-4 mb-5 flex gap-5 flex-nowrap">
+                      <div className="px-4 py-2 rounded-md bg-indigo-600 text-white font-medium text-sm lg:text-base cursor-pointer">
                         Dashboard
                       </div>
-                      <div className="px-4 py-2 text-gray-500 font-medium">
+                      <div className="px-4 py-2 text-gray-500 font-medium text-sm lg:text-base cursor-pointer hover:text-gray-900 transition">
                         Calendar
                       </div>
-                      <div className="px-4 py-2 text-gray-500 font-medium">
+                      <div className="px-4 py-2 text-gray-500 font-medium text-sm lg:text-base cursor-pointer hover:text-gray-900 transition">
                         Progress
                       </div>
                     </div>
@@ -39,10 +39,10 @@ const Preview = () => {
                     <div className="grid grid-cols-[2fr_1fr] gap-5">
                       {/* Tasks */}
                       <div className="space-y-3">
-                        <div className="flex gap-3 p-7 border border-slate-200 shadow rounded-lg bg-slate-50 hover:bg-slate-100 transition">
-                          <div className="w-4 h-4 border-2 rounded"></div>
+                        <div className="flex gap-3 p-5 lg:p-7 border border-slate-200 shadow rounded-lg bg-slate-50 transition hover:bg-slate-100 hover:shadow-lg cursor-pointer">
+                          <div className="w-4 h-4 min-w-[16px] min-h-[16px] border-2 rounded relative mt-1 flex items-center justify-center shrink-0"></div>
                           <div>
-                            <div className="font-medium text-gray-900">
+                            <div className="font-medium text-gray-900 text-sm lg:text-base">
                               Complete Math Assignment
                             </div>
                             <div className="text-xs text-gray-500">
@@ -51,14 +51,14 @@ const Preview = () => {
                           </div>
                         </div>
 
-                        <div className="flex gap-3 p-7 shadow-xl border border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 opacity-60">
-                          <div className="w-4 h-4 bg-green-500 border-green-500 border-2 rounded relative">
+                        <div className="flex gap-3 p-5 lg:p-7 border border-slate-200 rounded-lg bg-slate-50 opacity-60 cursor-default">
+                          <div className="w-4 h-4 min-w-[16px] min-h-[16px] bg-green-500 border-green-500 border-2 rounded relative mt-1 flex items-center justify-center shrink-0">
                             <span className="absolute text-white text-xs left-[2px] top-[-2px]">
                               ✓
                             </span>
                           </div>
                           <div>
-                            <div className="font-medium line-through">
+                            <div className="font-medium line-through text-sm lg:text-base">
                               Read Chapter 5
                             </div>
                             <div className="text-xs text-gray-500">
@@ -67,10 +67,10 @@ const Preview = () => {
                           </div>
                         </div>
 
-                        <div className="flex gap-3 p-7 border border-slate-200 shadow rounded-lg bg-slate-50 hover:bg-slate-100 transition">
-                          <div className="w-4 h-4 border-2 rounded"></div>
+                        <div className="flex gap-3 p-5 lg:p-7 border border-slate-200 shadow rounded-lg bg-slate-50 transition hover:bg-slate-100 hover:shadow-lg cursor-pointer">
+                          <div className="w-4 h-4 min-w-[16px] min-h-[16px] border-2 rounded relative mt-1 flex items-center justify-center shrink-0"></div>
                           <div>
-                            <div className="font-medium text-gray-900">
+                            <div className="font-medium text-gray-900 text-sm lg:text-base">
                               Prepare for Quiz
                             </div>
                             <div className="text-xs text-gray-500">
@@ -79,26 +79,34 @@ const Preview = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-8">
-                        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2 h-25 text-center shadow-sm transition hover:shadow-xl">
-                          <span className="text-5xl p-2 font-bold bg-gradient-to-b from-indigo-600 to-indigo-600/40 bg-clip-text text-transparent">
+
+                      {/* Stats */}
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-center shadow-sm transition hover:shadow-xl cursor-pointer">
+                          <span className="text-4xl lg:text-5xl p-2 font-bold bg-gradient-to-b from-indigo-600 to-indigo-600/40 bg-clip-text text-transparent">
                             12
                           </span>
-                          <p className="text-md text-slate-500">Total Tasks</p>
+                          <p className="text-sm lg:text-md text-slate-500">
+                            Total Tasks
+                          </p>
                         </div>
 
-                        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2 h-25 text-center shadow-sm transition hover:shadow-xl">
-                          <span className="text-5xl p-2 font-bold bg-gradient-to-b from-indigo-600 to-indigo-600/40 bg-clip-text text-transparent">
+                        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-center shadow-sm transition hover:shadow-xl cursor-pointer">
+                          <span className="text-4xl lg:text-5xl p-2 font-bold bg-gradient-to-b from-indigo-600 to-indigo-600/40 bg-clip-text text-transparent">
                             8
                           </span>
-                          <p className="text-md text-slate-500">Completed</p>
+                          <p className="text-sm lg:text-md text-slate-500">
+                            Completed
+                          </p>
                         </div>
 
-                        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2 h-25 text-center shadow-sm transition hover:shadow-xl">
-                          <span className="text-5xl p-2 font-bold bg-gradient-to-b from-indigo-600 to-indigo-600/40 bg-clip-text text-transparent">
+                        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-center shadow-sm transition hover:shadow-xl cursor-pointer">
+                          <span className="text-4xl lg:text-5xl p-2 font-bold bg-gradient-to-b from-indigo-600 to-indigo-600/40 bg-clip-text text-transparent">
                             17%
                           </span>
-                          <p className="text-md text-slate-500">Progress</p>
+                          <p className="text-sm lg:text-md text-slate-500">
+                            Progress
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -112,7 +120,7 @@ const Preview = () => {
               </div>
             </div>
 
-            {/* Mobile Preview */}
+            {/* ================= MOBILE PREVIEW (UNCHANGED) ================= */}
             <div className="flex flex-col items-center gap-5">
               <div className="rounded-[30px] bg-neutral-900 px-3 pt-5 pb-8 shadow-2xl w-[280px]">
                 <div className="rounded-xl overflow-hidden">

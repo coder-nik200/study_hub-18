@@ -35,21 +35,27 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
     /* Overlay */
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center
+        bg-black/50 backdrop-blur-sm px-4"
     >
       {/* Modal */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-lg rounded-xl shadow-lg p-6"
+        className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6
+          animate-in fade-in zoom-in-95 duration-200"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-300 pb-4 mb-6">
+        <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
             {task ? "Edit Task" : "Add New Task"}
           </h2>
+
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-500 hover:bg-red-500 hover:text-white transition"
+            className="w-8 h-8 flex items-center justify-center rounded-md
+              bg-gray-100 text-gray-500
+              hover:bg-red-500 hover:text-white
+              transition-all duration-200 hover:scale-105"
           >
             <X size={18} />
           </button>
@@ -70,7 +76,9 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
               onChange={handleChange}
               required
               placeholder="Enter task title"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md
+                focus:outline-none focus:ring-2 focus:ring-indigo-500
+                hover:border-indigo-400 transition"
             />
           </div>
 
@@ -85,7 +93,9 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
               onChange={handleChange}
               rows="3"
               placeholder="Enter task description (optional)"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md resize-none
+                focus:outline-none focus:ring-2 focus:ring-indigo-500
+                hover:border-indigo-400 transition"
             />
           </div>
 
@@ -103,7 +113,9 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
                 value={formData.dueDate}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md
+                  focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  hover:border-indigo-400 transition"
               />
             </div>
 
@@ -117,7 +129,9 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white
+                  focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  hover:border-indigo-400 transition cursor-pointer"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -135,7 +149,9 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white
+                focus:outline-none focus:ring-2 focus:ring-indigo-500
+                hover:border-indigo-400 transition cursor-pointer"
             >
               <option value="study">Study</option>
               <option value="assignment">Assignment</option>
@@ -147,17 +163,22 @@ const TaskForm = ({ task, onSubmit, onClose }) => {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col md:flex-row gap-3 justify-end pt-5 border-t border-gray-300">
+          <div className="flex flex-col md:flex-row gap-3 justify-end pt-5 border-t border-gray-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+              className="px-5 py-2 rounded-md bg-gray-100 text-gray-700
+                hover:bg-gray-200 hover:-translate-y-0.5
+                transition-all duration-200"
             >
               Cancel
             </button>
+
             <button
               type="submit"
-              className="px-5 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition"
+              className="px-5 py-2 rounded-md bg-indigo-600 text-white
+                hover:bg-indigo-700 hover:-translate-y-0.5 hover:shadow-lg
+                transition-all duration-200"
             >
               {task ? "Update Task" : "Add Task"}
             </button>

@@ -26,22 +26,18 @@ const Dashboard = () => {
     fetchTasks();
   }, []);
 
-  // Fetch Task
   const fetchTasks = async () => {
     try {
       const res = await getTasks();
-
       setTasks(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Add Task
   const addTask = async (taskData) => {
     try {
       const res = await createTask(taskData);
-
       setTasks((prev) => [res.data, ...prev]);
       setShowTaskForm(false);
     } catch (error) {
@@ -49,15 +45,12 @@ const Dashboard = () => {
     }
   };
 
-  // Update Task
   const updateTask = async (id, updates) => {
     try {
       const res = await updateTaskAPI(id, updates);
-
       setTasks((tasks) =>
-        tasks.map((task) => (task._id === id ? res.data : task))
+        tasks.map((task) => (task._id === id ? res.data : task)),
       );
-
       setEditingTask(null);
       setShowTaskForm(false);
     } catch (error) {
@@ -65,11 +58,9 @@ const Dashboard = () => {
     }
   };
 
-  // Delete Task
   const deleteTask = async (id) => {
     try {
       await deleteTaskAPI(id);
-
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.error(error);
@@ -77,15 +68,13 @@ const Dashboard = () => {
   };
 
   const toggleTaskComplete = async (task) => {
-    if (!task || !task._id) return; // 🛡 safety
-
+    if (!task || !task._id) return;
     try {
       const res = await updateTaskAPI(task._id, {
         completed: !task.completed,
       });
-
       setTasks((tasks) =>
-        tasks.map((t) => (t._id === task._id ? res.data : t))
+        tasks.map((t) => (t._id === task._id ? res.data : t)),
       );
     } catch (error) {
       console.error(error);
@@ -95,21 +84,21 @@ const Dashboard = () => {
   /* ---------------- UI ---------------- */
 
   return (
-    <div className="min-h-screen py-10 bg-gray-50">
+    <div className="min-h-screen py-8 sm:py-10 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-b-slate-300 pb-5 mb-10 gap-5">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-300 pb-5 mb-8 gap-5">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
               Welcome back, {user?.name || "User"}!
             </h1>
-            <p className="text-gray-500 text-lg pt-2">
+            <p className="text-gray-500 text-base sm:text-lg pt-2">
               Let's make today productive 🚀
             </p>
           </div>
 
           {/* Navigation */}
-          <div className="flex gap-3 overflow-x-auto">
+          <div className="flex gap-2 sm:gap-3 flex-nowrap">
             {[
               { key: "dashboard", icon: CheckSquare, label: "Dashboard" },
               { key: "calendar", icon: Calendar, label: "Calendar" },
@@ -118,14 +107,18 @@ const Dashboard = () => {
               <button
                 key={key}
                 onClick={() => setActiveView(key)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-lg border-2 font-medium transition
+                className={`flex items-center gap-1.5 sm:gap-2
+                  px-3 sm:px-5
+                  py-2 sm:py-3
+                  text-sm sm:text-base
+                  rounded-lg border-2 font-medium transition
                   ${
                     activeView === key
                       ? "bg-indigo-600 border-indigo-600 text-white"
                       : "bg-white border-gray-200 text-gray-600 hover:border-indigo-700 hover:text-indigo-600"
                   }`}
               >
-                <Icon size={20} />
+                <Icon size={18} className="sm:size-[20px]" />
                 {label}
               </button>
             ))}
@@ -134,10 +127,10 @@ const Dashboard = () => {
 
         {/* Dashboard View */}
         {activeView === "dashboard" && (
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6 sm:gap-8">
             <button
               onClick={() => setShowTaskForm(true)}
-              className="flex items-center gap-2 w-fit bg-indigo-600 text-white px-5 py-3 rounded-lg font-medium hover:bg-indigo-700 transition"
+              className="flex items-center gap-2 w-fit bg-indigo-600 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg font-medium hover:bg-indigo-700 transition"
             >
               <Plus size={20} />
               Add New Task

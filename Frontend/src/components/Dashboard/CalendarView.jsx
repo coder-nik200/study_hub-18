@@ -39,7 +39,7 @@ const CalendarView = ({ tasks = [] }) => {
   const getTasksForDate = (date) => {
     if (!date) return [];
     return tasks.filter(
-      (t) => normalizeDate(t.dueDate) === normalizeDate(date)
+      (t) => normalizeDate(t.dueDate) === normalizeDate(date),
     );
   };
 
@@ -77,12 +77,15 @@ const CalendarView = ({ tasks = [] }) => {
   return (
     <div className="bg-white rounded-xl shadow overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 bg-gray-50 border-gray-200">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 bg-gray-50 border-b border-gray-200">
         {/* Navigation */}
         <div className="flex items-center gap-5">
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white shadow hover:bg-indigo-600 hover:text-white transition"
+            className="w-10 h-10 flex items-center justify-center rounded-lg
+              bg-white border border-gray-300
+              hover:bg-indigo-600 hover:text-white hover:border-indigo-600
+              transition-all"
           >
             <ChevronLeft size={20} />
           </button>
@@ -95,22 +98,25 @@ const CalendarView = ({ tasks = [] }) => {
 
           <button
             onClick={() => navigate(1)}
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white shadow hover:bg-indigo-600 hover:text-white transition"
+            className="w-10 h-10 flex items-center justify-center rounded-lg
+              bg-white border border-gray-300
+              hover:bg-indigo-600 hover:text-white hover:border-indigo-600
+              transition-all"
           >
             <ChevronRight size={20} />
           </button>
         </div>
 
         {/* Toggle */}
-        <div className="flex bg-white rounded-lg p-1 shadow">
+        <div className="flex bg-white rounded-lg p-1 border border-gray-300">
           {["week", "month"].map((v) => (
             <button
               key={v}
               onClick={() => setView(v)}
-              className={`px-4 py-2 rounded-md font-medium transition
+              className={`px-4 py-2 rounded-md font-medium transition-all
                 ${
                   view === v
-                    ? "bg-indigo-600 text-white"
+                    ? "bg-indigo-600 text-white shadow"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
             >
@@ -122,7 +128,7 @@ const CalendarView = ({ tasks = [] }) => {
 
       {/* Grid */}
       <div
-        className={`grid grid-cols-7 border border-gray-200 ${
+        className={`grid grid-cols-7 border border-gray-300 ${
           view === "month" ? "min-h-[600px]" : "min-h-[300px]"
         }`}
       >
@@ -130,7 +136,8 @@ const CalendarView = ({ tasks = [] }) => {
         {weekLabels.map((day) => (
           <div
             key={day}
-            className="py-4 text-center font-semibold text-sm bg-gray-50 border-gray-200"
+            className="py-4 text-center font-semibold text-sm
+              bg-gray-100 border border-gray-300"
           >
             {day}
           </div>
@@ -143,7 +150,7 @@ const CalendarView = ({ tasks = [] }) => {
           return (
             <div
               key={date ? date.toISOString() : `empty-${i}`}
-              className={`border border-gray-200 p-2 transition
+              className={`border border-gray-300 p-2 transition-all
                 ${
                   !date
                     ? "bg-gray-100 opacity-50"
@@ -158,9 +165,7 @@ const CalendarView = ({ tasks = [] }) => {
                 <>
                   <div
                     className={`text-sm font-semibold mb-2 ${
-                      isToday(date)
-                        ? "text-indigo-600 font-bold"
-                        : "text-gray-800"
+                      isToday(date) ? "text-indigo-600" : "text-gray-800"
                     }`}
                   >
                     {date.getDate()}
@@ -173,27 +178,24 @@ const CalendarView = ({ tasks = [] }) => {
                         <div
                           key={task._id}
                           title={task.title}
-                          className={`text-[11px] px-2 py-1 rounded-full truncate cursor-pointer transition
-                            ${
-                              task.priority === "high"
-                                ? "bg-red-100 text-red-700"
-                                : task.priority === "medium"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : "bg-green-100 text-green-700"
-                            }
-                            ${
-                              task.completed
-                                ? "line-through opacity-60"
-                                : "hover:scale-[1.02] hover:shadow"
-                            }
-                          `}
+                          className={`text-[11px] px-2 py-1 rounded-lg cursor-pointer break-words whitespace-normal leading-tight transition-all ${
+                            task.priority === "high"
+                              ? "bg-red-100 text-red-700"
+                              : task.priority === "medium"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-green-100 text-green-700"
+                          }${
+                            task.completed
+                              ? "line-through opacity-60"
+                              : "hover:scale-[1.03] hover:shadow-sm"
+                          }`}
                         >
                           {task.title}
                         </div>
                       ))}
 
                     {dayTasks.length > (view === "month" ? 3 : 10) && (
-                      <div className="text-[10px] text-gray-500 bg-gray-100 rounded-full px-2 py-1 text-center mt-1">
+                      <div className="text-[10px] text-gray-500 bg-gray-100 border border-gray-300 rounded-full px-2 py-1 text-center mt-1">
                         +{dayTasks.length - (view === "month" ? 3 : 10)} more
                       </div>
                     )}
