@@ -58,7 +58,10 @@ export default function Footer() {
                   href: "https://www.linkedin.com/in/nitish-kumar-bharti-631a37359/",
                 },
                 { icon: Github, href: "https://github.com/coder-nik200" },
-                { icon: Mail, href: "mailto:codesnippet17@gmail.com" },
+                {
+                  icon: Mail,
+                  href: "https://mail.google.com/mail/?view=cm&fs=1&to=codesnippet17@gmail.com",
+                },
               ].map((social, i) => {
                 const Icon = social.icon;
                 return (
@@ -186,7 +189,7 @@ export default function Footer() {
               />
               <button
                 onClick={handleSubscribe}
-                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold hover:bg-indigo-700 transition-all duration-300 ease-out active:scale-95"
+                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold hover:bg-indigo-700 transition-all duration-300 ease-out active:scale-95 hover:-translate-y-1 hover:shadow-2xl"
               >
                 Subscribe
               </button>

@@ -67,7 +67,7 @@ const Login = () => {
               Welcome Back
             </h1>
             <p className="text-base text-slate-500">
-              Sign in to your StudyHub account
+              Login to your StudyHub account
             </p>
           </div>
 
@@ -141,9 +141,9 @@ const Login = () => {
 
           {/* FOOTER */}
           <div className="mt-8 border-t border-slate-200 pt-6 text-center">
-            <button className="mb-4 text-base font-semibold text-indigo-600 underline hover:text-indigo-700 transition">
+            {/* <button className="mb-4 text-base font-semibold text-indigo-600 underline hover:text-indigo-700 transition">
               Forgot your password?
-            </button>
+            </button> */}
 
             <p className="text-base text-slate-500">
               Don’t have an account?{" "}

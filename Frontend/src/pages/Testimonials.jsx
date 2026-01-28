@@ -9,12 +9,12 @@ const Testimonials = () => {
       text: "StudyHub completely transformed how I organize my studies. My grades improved significantly!",
     },
     {
-      name: "Anjali Singhania",
+      name: "Mahima Dingra",
       role: "Business Major",
       text: "The calendar view and priority system help me stay on top of all assignments.",
     },
     {
-      name: "Vansh Rai",
+      name: "Navpreet kaur",
       role: "Pre-Med Student",
       text: "Simple, intuitive, and effective. Exactly what every student needs.",
     },

@@ -120,13 +120,16 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="hidden md:flex gap-3">
-                <Link to="/login" className="px-4 py-2 border-2 rounded-md">
+              <div className="hidden md:flex items-center gap-4">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 rounded-md border-2 font-semibold border-blue-900 text-blue-900 hover:bg-indigo-600 hover:text-white transition hover:-translate-y-1 hover:shadow-2xl"
+                >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md"
+                  className="px-4 py-2 rounded-md font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition hover:-translate-y-1 hover:shadow-2xl"
                 >
                   Sign Up
                 </Link>

@@ -193,7 +193,7 @@ const Signup = () => {
                 to="/login"
                 className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline transition"
               >
-                Sign in here
+                Login here
               </Link>
             </p>
           </div>

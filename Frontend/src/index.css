@@ -2,7 +2,7 @@
 
 /* ========== RESPONSIVE BASE STYLES ========== */
 * {
-  @apply transition-colors duration-200;
+  @apply transition-all duration-200;
 }
 
 html {

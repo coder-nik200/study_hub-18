@@ -1,7 +1,7 @@
 import { Calendar, CheckSquare, TrendingUp, Target } from "lucide-react";
 import contentData from "../data/content.json";
 
-const Features1 = () => {
+const HomeFeatures = () => {
   const { homepage } = contentData;
 
   return (
@@ -48,4 +48,4 @@ const Features1 = () => {
   );
 };
 
-export default Features1;
+export default HomeFeatures;

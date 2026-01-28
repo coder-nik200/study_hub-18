@@ -22,7 +22,7 @@ const Hero = () => {
             <div className="flex flex-wrap gap-4">
               <Link
                 to={user ? "/dashboard" : "/signup"} // ✅ dynamic
-                className="rounded-2xl bg-indigo-600 text-white px-8 py-4 font-semibold  shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
+                className="rounded-2xl bg-indigo-600 text-white px-8 py-4 font-semibold shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
               >
                 {homepage.hero.cta}
               </Link>

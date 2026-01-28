@@ -1,5 +1,5 @@
 import "./Home.css";
-import Features1 from "../components/HomeFeatures";
+import HomeFeatures from "../components/HomeFeatures";
 
 const Features = () => {
   return (
@@ -10,7 +10,7 @@ const Features = () => {
             Why Choose StudyHub?
           </h2>
 
-          <Features1 />
+          <HomeFeatures />
         </div>
       </section>
     </>
