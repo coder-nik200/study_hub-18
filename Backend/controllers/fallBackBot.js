@@ -3,7 +3,12 @@ const replies = require("../data/fallBackReplies.json");
 const getFallBackReply = (message) => {
   const userMessage = message.toLowerCase();
 
-  for (const item of replies) {
+  // 🔥 sort keywords by length (longest first)
+  const sortedReplies = [...replies].sort(
+    (a, b) => b.keyword.length - a.keyword.length,
+  );
+
+  for (const item of sortedReplies) {
     if (item.keyword && userMessage.includes(item.keyword.toLowerCase())) {
       return item.reply;
     }

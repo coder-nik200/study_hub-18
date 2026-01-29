@@ -384,9 +384,248 @@
     "keyword": "roadmap",
     "reply": "StudyHub plans include gamification, community forums, and AI-based learning ✨"
   },
-
   {
     "keyword": "motivation",
     "reply": "Stay consistent and disciplined for better results 🔑"
+  },
+  {
+    "keyword": "what problem does studyhub solve",
+    "reply": "StudyHub solves the problem of scattered study resources by providing notes, quizzes, and progress tracking in one place 📚"
+  },
+  {
+    "keyword": "why did you create studyhub",
+    "reply": "StudyHub was created to help students study smarter with organized content and easy access to learning materials 🎯"
+  },
+  {
+    "keyword": "is studyhub a real project",
+    "reply": "Yes, StudyHub is a real full-stack project built using modern web technologies 🚀"
+  },
+  {
+    "keyword": "is studyhub good for bca",
+    "reply": "StudyHub is ideal for BCA students as it covers DBMS, OS, DSA, and web development subjects 🎓"
+  },
+  {
+    "keyword": "what makes studyhub unique",
+    "reply": "StudyHub is unique because it combines notes, quizzes, coding practice, and an AI chatbot in one platform ✨"
+  },
+  {
+    "keyword": "can studyhub be used for college project",
+    "reply": "Yes, StudyHub can be submitted as a college project because it includes frontend, backend, and database concepts 📂"
+  },
+  {
+    "keyword": "what technologies are used in studyhub",
+    "reply": "StudyHub uses React, Tailwind CSS, Node.js, Express, MongoDB, and JWT authentication 🧩"
+  },
+  {
+    "keyword": "is studyhub scalable",
+    "reply": "Yes, StudyHub is designed to be scalable and can support more users and features in the future 📈"
+  },
+  {
+    "keyword": "future scope of studyhub",
+    "reply": "The future scope includes live classes, AI recommendations, certificates, and a mobile app 🚀"
+  },
+  {
+    "keyword": "does studyhub use ai",
+    "reply": "Yes, StudyHub uses AI features like a smart chatbot to assist students 🤖"
+  },
+  {
+    "keyword": "how many continents are there",
+    "reply": "There are 7 continents in the world 🌍"
+  },
+  {
+    "keyword": "how many oceans are there",
+    "reply": "There are 5 oceans on Earth 🌊"
+  },
+  {
+    "keyword": "largest ocean",
+    "reply": "The Pacific Ocean is the largest ocean in the world 🌊"
+  },
+  {
+    "keyword": "highest mountain",
+    "reply": "Mount Everest is the highest mountain in the world 🏔️"
+  },
+  {
+    "keyword": "longest river",
+    "reply": "The Nile River is considered the longest river in the world 🌊"
+  },
+  {
+    "keyword": "fastest animal",
+    "reply": "The cheetah is the fastest land animal 🐆"
+  },
+  {
+    "keyword": "largest desert",
+    "reply": "The Sahara Desert is the largest hot desert in the world 🏜️"
+  },
+  {
+    "keyword": "earth rotation time",
+    "reply": "The Earth takes approximately 24 hours to complete one rotation ⏰"
+  },
+  {
+    "keyword": "earth revolution time",
+    "reply": "The Earth takes about 365 days to revolve around the Sun ☀️"
+  },
+  {
+    "keyword": "why is earth special",
+    "reply": "Earth is special because it is the only known planet that supports life 🌱"
+  },
+  {
+    "keyword": "confused",
+    "reply": "It’s okay to feel confused 😅 Tell me what topic you’re studying, I’ll help you step by step 📘"
+  },
+  {
+    "keyword": "dont understand",
+    "reply": "No worries! Learning takes time 😊 Which subject or topic should I explain again?"
+  },
+  {
+    "keyword": "help me",
+    "reply": "Sure! I can help with StudyHub features, BCA subjects, coding, or exam prep 💡"
+  },
+  {
+    "keyword": "guide me",
+    "reply": "I’m here to guide you 👍 Tell me whether you need help with studies, projects, or coding"
+  },
+  {
+    "keyword": "project help",
+    "reply": "I can help you with project ideas, explanations, and features 🚀 What is your project topic?"
+  },
+  {
+    "keyword": "how to start project",
+    "reply": "Start by defining the problem, choosing a tech stack, and planning features 🧠 Want help with that?"
+  },
+  {
+    "keyword": "bca help",
+    "reply": "I can help with BCA subjects like DBMS, OS, DSA, and Web Development 🎓"
+  },
+  {
+    "keyword": "exam stress",
+    "reply": "Take a deep breath 😌 Focus on important topics and revise smartly — you’ve got this 💪"
+  },
+  {
+    "keyword": "exam preparation",
+    "reply": "For exams, revise notes, practice questions, and test yourself regularly 📝"
+  },
+  {
+    "keyword": "coding problem",
+    "reply": "Tell me which programming language or problem you’re facing 💻 I’ll help you solve it"
+  },
+  {
+    "keyword": "error",
+    "reply": "Errors are part of learning 😄 Share the error message or code, and I’ll help you debug it"
+  },
+  {
+    "keyword": "motivation",
+    "reply": "Consistency beats talent 💪 Keep learning a little every day and success will follow 🌱"
+  },
+  {
+    "keyword": "tired",
+    "reply": "Take a short break ☕ Come back refreshed — learning works better with rest 😊"
+  },
+  {
+    "keyword": "study plan",
+    "reply": "A good study plan includes short sessions, revision, and practice 🧠 Want me to make one?"
+  },
+  {
+    "keyword": "future career",
+    "reply": "Focus on skills, projects, and consistency — your future will shape itself 🚀"
+  },
+  {
+    "keyword": "what should i study",
+    "reply": "If you’re a BCA student, focus on DBMS, DSA, OS, and web development 📘"
+  },
+  {
+    "keyword": "learning",
+    "reply": "Learning is a journey, not a race 🌱 Ask questions freely — that’s how you grow"
+  },
+  {
+    "keyword": "joke",
+    "reply": "Why do programmers prefer dark mode? 🌙 Because light attracts bugs 🐞😄"
+  },
+  {
+    "keyword": "funny",
+    "reply": "I told my computer I needed a break… now it won’t stop sending me KitKat ads 😂"
+  },
+  {
+    "keyword": "laugh",
+    "reply": "Why was the JavaScript developer sad? 😢 Because he didn’t know how to 'null' his feelings 😆"
+  },
+  {
+    "keyword": "coding joke",
+    "reply": "Why do programmers hate nature? 🌳 Because it has too many bugs 🐛🤣"
+  },
+  {
+    "keyword": "programmer joke",
+    "reply": "A programmer’s wife says: 'Go to the store and buy milk.' He comes back with 10 packets… because they had an offer 🤓😂"
+  },
+  {
+    "keyword": "debug",
+    "reply": "Debugging is like being a detective in a crime movie… where you are also the criminal 🕵️‍♂️😂"
+  },
+  {
+    "keyword": "exam joke",
+    "reply": "Exams are like girlfriends… too many questions and not enough time 😅📚"
+  },
+  {
+    "keyword": "student joke",
+    "reply": "Student life: Study 1 day before exam, pray 1 hour before exam, and forget everything after exam 😂🎓"
+  },
+  {
+    "keyword": "bca joke",
+    "reply": "BCA students don’t fear ghosts 👻… only internal marks 😭😂"
+  },
+  {
+    "keyword": "project joke",
+    "reply": "My project works perfectly… until the teacher runs it 😅💻"
+  },
+  {
+    "keyword": "ai joke",
+    "reply": "I asked AI for a joke… it said 'Error 404: Humor not found' 🤖😂"
+  },
+  {
+    "keyword": "study joke",
+    "reply": "I planned to study… but my bed and phone had better plans 😴📱😂"
+  },
+  {
+    "keyword": "namaste",
+    "reply": "Namaste 🙏 "
+  },
+  {
+    "keyword": "hola",
+    "reply": "Hola 👋"
+  },
+  {
+    "keyword": "bonjour",
+    "reply": "Bonjour 👋"
+  },
+  {
+    "keyword": "ciao",
+    "reply": "Ciao 👋"
+  },
+  {
+    "keyword": "hallo",
+    "reply": "Hallo 👋"
+  },
+  {
+    "keyword": "konnichiwa",
+    "reply": "Konnichiwa 👋"
+  },
+  {
+    "keyword": "annyeong",
+    "reply": "Annyeong 👋"
+  },
+  {
+    "keyword": "ni hao",
+    "reply": "Ni Hao 👋"
+  },
+  {
+    "keyword": "salaam",
+    "reply": "Salaam 👋"
+  },
+  {
+    "keyword": "ola",
+    "reply": "Olá 👋"
+  },
+  {
+    "keyword": "sat sri akal",
+    "reply": "Sat Sri Akal 🙏"
   }
 ]
