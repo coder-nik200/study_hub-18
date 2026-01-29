@@ -6,9 +6,10 @@ function AiChatBot() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ NEW
 
   const chatEndRef = useRef(null);
-  const chatWindowRef = useRef(null); // Ref for chat window
+  const chatWindowRef = useRef(null);
 
   const resetChat = () => {
     setChat([]);
@@ -16,25 +17,38 @@ function AiChatBot() {
   };
 
   const sendMessage = async () => {
-    if (!message.trim()) return;
+    if (!message.trim() || loading) return; // ✅ block spam
 
-    const res = await api.post("/chat", { message });
-
-    setChat((prev) => [
-      ...prev,
-      { sender: "user", text: message },
-      { sender: "bot", text: res.data.reply },
-    ]);
-
+    const userText = message;
     setMessage("");
+    setLoading(true);
+
+    // show user message immediately
+    setChat((prev) => [...prev, { sender: "user", text: userText }]);
+
+    try {
+      const res = await api.post("/chat", { message: userText });
+
+      setChat((prev) => [...prev, { sender: "bot", text: res.data.reply }]);
+    } catch (err) {
+      setChat((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "⚠️ Something went wrong. Please try again later.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Auto-scroll to bottom
+  // Auto-scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chat]);
+  }, [chat, loading]);
 
-  // Close chat when clicking outside
+  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -47,8 +61,6 @@ function AiChatBot() {
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
@@ -58,7 +70,7 @@ function AiChatBot() {
 
   return (
     <>
-      {/* Floating Chat Button */}
+      {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 bg-[#5028c9] text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition z-50"
@@ -66,7 +78,6 @@ function AiChatBot() {
         <Bot />
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
         <div
           ref={chatWindowRef}
@@ -77,8 +88,8 @@ function AiChatBot() {
             <span className="flex gap-2">
               <Bot /> StudyHub AI Assistant
             </span>
-            <div className="flex items-center gap-3">
-              <button onClick={resetChat} title="Reset Chat">
+            <div className="flex gap-3">
+              <button onClick={resetChat}>
                 <RotateCcw size={18} />
               </button>
               <button onClick={() => setIsOpen(false)}>
@@ -87,7 +98,7 @@ function AiChatBot() {
             </div>
           </div>
 
-          {/* Chat Messages Area */}
+          {/* Messages */}
           <div className="h-[280px] p-3 space-y-2 overflow-y-auto bg-gray-100">
             {chat.length === 0 && (
               <p className="text-gray-400 text-sm text-center">
@@ -103,7 +114,7 @@ function AiChatBot() {
                 }`}
               >
                 <div
-                  className={`inline-block w-fit max-w-[75%] px-3 py-2 text-sm rounded-xl break-words whitespace-pre-wrap ${
+                  className={`max-w-[75%] px-3 py-2 text-sm rounded-xl whitespace-pre-wrap ${
                     c.sender === "user"
                       ? "bg-indigo-600 text-white rounded-br-sm"
                       : "bg-gray-200 text-gray-900 rounded-bl-sm"
@@ -114,6 +125,15 @@ function AiChatBot() {
               </div>
             ))}
 
+            {/* Typing indicator */}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-gray-200 px-3 py-2 rounded-xl text-sm text-gray-600 animate-pulse">
+                  Thinking...
+                </div>
+              </div>
+            )}
+
             <div ref={chatEndRef} />
           </div>
 
@@ -123,16 +143,19 @@ function AiChatBot() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              disabled={loading}
               placeholder="Ask anything..."
               className="flex-1 px-3 py-2 text-sm border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               onClick={sendMessage}
+              disabled={loading}
               className="bg-[#5028c9] text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-900 transition"
             >
               <Send size={18} />
             </button>
           </div>
+
           <p className="text-xs text-gray-500 text-center p-1">
             StudyBot may make mistakes.
           </p>

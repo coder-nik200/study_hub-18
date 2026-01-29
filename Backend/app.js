@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-// const cookieParser = require("cookie-parser");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const app = express();
@@ -24,6 +24,7 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("Hi");
