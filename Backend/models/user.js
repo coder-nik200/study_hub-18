@@ -25,14 +25,14 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["student", "admin"],
-      default: "student",
+      required: true,
     },
 
     avatar: {
       type: String, // image URL
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("User", userSchema);

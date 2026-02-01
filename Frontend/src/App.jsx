@@ -10,9 +10,12 @@ import About from "./components/About/About";
 import Tips from "./components/Tips/Tips";
 import Dashboard from "./components/Dashboard/Dashboard";
 import AiChatBot from "./components/ChatBot/AiChatBot";
+import { motion, useScroll } from "framer-motion";
 
 const App = () => {
   const { user } = useContext(UserContext);
+
+  const { scrollYProgress } = useScroll();
 
   return (
     <>
@@ -31,7 +34,14 @@ const App = () => {
 
       <div className="pt-10">
         <Navbar />
+        <motion.div
+          style={{
+            scaleX: scrollYProgress,
+          }}
+          className="bg-indigo-500 origin-left w-full h-2 fixed top-0 left-0 z-50 right-0"
+        />
       </div>
+
       {user ? <AiChatBot /> : null}
 
       <Routes>

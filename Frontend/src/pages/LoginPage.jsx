@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, X } from "lucide-react";
 import api from "../api/axios";
 import { UserContext } from "../context/UserContext";
