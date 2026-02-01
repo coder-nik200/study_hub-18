@@ -1,6 +1,6 @@
 import { Lock, Mail, User, Eye, EyeOff, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
@@ -49,7 +49,8 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
       await api.post("/signup", formData);
       toast.success("Account created successfully 🎉");
       handleClose();
-      navigate("/");
+      // navigate("/");
+      navigate("/", { state: { openLogin: true }, replace: true });
     } catch (error) {
       toast.error(error.response?.data?.message || "Signup failed");
     } finally {
