@@ -32,6 +32,7 @@ const App = () => {
       <div className="pt-10">
         <Navbar />
       </div>
+
       {user ? <AiChatBot /> : null}
 
       <Routes>
