@@ -26,15 +26,26 @@ const getSignup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 5️⃣ Create user (NO confirmPassword)
-    await User.create({
+    const user = await User.create({
       name,
       email,
       password: hashedPassword,
     });
 
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "3d",
+    });
+
+    res.cookie("token", token);
+
     res.status(201).json({
       success: true,
       message: "User registered successfully",
+      user: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+      },
     });
   } catch (error) {
     console.error("SIGNUP ERROR ❌", error);
@@ -60,11 +71,9 @@ const getLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email }, // include name and email
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "3d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -75,7 +84,11 @@ const getLogin = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Login successful",
-      user,
+      user: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+      },
     });
   } catch (error) {
     console.error("LOGIN ERROR ❌", error);
@@ -85,11 +98,15 @@ const getLogin = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    });
+    const token = req.cookies.token || req.header.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(400).json({
+        message: "User logged out successfully",
+      });
+    }
+
+    res.clearCookie("token");
 
     res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {

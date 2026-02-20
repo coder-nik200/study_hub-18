@@ -13,6 +13,8 @@ const taskRouter = require("./routes/taskRoute");
 const contactRouter = require("./routes/contactRoute");
 const subscriberRouter = require("./routes/subscriberRoute");
 const chatRouter = require("./routes/chatRoutes");
+const expertRouter = require("./routes/expertRouter");
+const notificationRouter = require("./routes/notificationRoute");
 
 // CORS
 app.use(
@@ -35,6 +37,8 @@ app.use(taskRouter);
 app.use(contactRouter);
 app.use(subscriberRouter);
 app.use(chatRouter);
+app.use(expertRouter);
+app.use(notificationRouter);
 
 // Database connection
 mongoose

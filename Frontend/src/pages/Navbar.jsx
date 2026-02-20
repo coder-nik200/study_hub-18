@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import api from "../api/axios";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
+import NotificationBell from "../components/Notification/NotificationBell";
 
 const Navbar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -97,10 +98,24 @@ const Navbar = () => {
             <Link className="nav-link" to="/">
               Home
             </Link>
+
             {user && (
-              <Link className="nav-link" to="/dashboard">
-                Dashboard
+              <Link className="nav-link" to="/expert">
+                Expert Panel
               </Link>
+            )}
+
+            {user && (
+              <>
+                <Link className="nav-link" to="/dashboard">
+                  Dashboard
+                </Link>
+                {user.role === "student" && (
+                  <Link className="nav-link" to="/student/tasks">
+                    My Tasks
+                  </Link>
+                )}
+              </>
             )}
             <Link className="nav-link" to="/tips">
               Study Tips
@@ -116,14 +131,16 @@ const Navbar = () => {
           {/* Actions */}
           <div className="flex items-center gap-4">
             {user ? (
-              <div className="relative" ref={userMenuRef}>
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100"
-                >
-                  <User size={20} />
-                  <span className="text-sm">{user.name || user.email}</span>
-                </button>
+              <>
+                <NotificationBell />
+                <div className="relative" ref={userMenuRef}>
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100"
+                  >
+                    <User size={20} />
+                    <span className="text-sm">{user.name || user.email}</span>
+                  </button>
 
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg">
@@ -136,7 +153,8 @@ const Navbar = () => {
                     </button>
                   </div>
                 )}
-              </div>
+                </div>
+              </>
             ) : (
               <div className="hidden md:flex items-center gap-4">
                 <button
