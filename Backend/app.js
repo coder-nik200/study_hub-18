@@ -15,6 +15,7 @@ const subscriberRouter = require("./routes/subscriberRoute");
 const chatRouter = require("./routes/chatRoutes");
 const expertRouter = require("./routes/expertRouter");
 const notificationRouter = require("./routes/notificationRoute");
+const profileRouter = require("./routes/profileRoute");
 
 // CORS
 app.use(
@@ -39,6 +40,10 @@ app.use(subscriberRouter);
 app.use(chatRouter);
 app.use(expertRouter);
 app.use(notificationRouter);
+app.use(profileRouter);
+
+// Serve uploaded files
+app.use("/uploads", express.static("uploads"));
 
 // Database connection
 mongoose

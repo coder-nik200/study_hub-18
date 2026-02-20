@@ -14,6 +14,7 @@ import { motion, useScroll } from "framer-motion";
 import ExpertDashboard from "./components/Expert/ExpertDashboard";
 import ExpertAnalysis from "./components/Expert/ExpertAnalysis";
 import StudentTasks from "./components/Student/StudentTasks";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -79,6 +80,17 @@ const App = () => {
           element={
             user ? (
               <StudentTasks />
+            ) : (
+              <Navigate to="/" state={{ openLogin: true }} replace />
+            )
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            user ? (
+              <Profile />
             ) : (
               <Navigate to="/" state={{ openLogin: true }} replace />
             )

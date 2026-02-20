@@ -34,3 +34,12 @@ export const markNotificationAsRead = (notificationId) =>
   api.patch(`/notifications/${notificationId}/read`);
 export const markAllNotificationsAsRead = () => api.patch("/notifications/read-all");
 export const getUnreadNotificationCount = () => api.get("/notifications/unread-count");
+
+// Profile
+export const getProfile = () => api.get("/profile");
+export const updateProfile = (formData) =>
+  api.put("/profile", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

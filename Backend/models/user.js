@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String, // image URL
     },
+    bio: {
+      type: String,
+      trim: true,
+      maxlength: 500,
+    },
   },
   { timestamps: true }
 );

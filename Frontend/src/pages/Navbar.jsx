@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { UserContext } from "../context/UserContext";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { BookOpen, Menu, X, User, LogOut } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { BookOpen, Menu, X, LogOut, UserCircle } from "lucide-react";
 import { toast } from "react-toastify";
 import api from "../api/axios";
 import LoginPage from "./LoginPage";
@@ -99,7 +99,7 @@ const Navbar = () => {
               Home
             </Link>
 
-            {user && (
+            {user?.role === "expert" && (
               <Link className="nav-link" to="/expert">
                 Expert Panel
               </Link>
@@ -136,23 +136,53 @@ const Navbar = () => {
                 <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100"
+                    className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition"
                   >
-                    <User size={20} />
-                    <span className="text-sm">{user.name || user.email}</span>
+                    {user.avatar ? (
+                      <img
+                        src={
+                          user.avatar.startsWith("http")
+                            ? user.avatar
+                            : `http://localhost:3000/${user.avatar}`
+                        }
+                        alt={user.name}
+                        className="w-8 h-8 rounded-full object-cover border-2 border-indigo-600"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
+                        {user.name?.charAt(0)?.toUpperCase() || "U"}
+                      </div>
+                    )}
+                    <span className="text-sm font-medium hidden md:block">
+                      {user.name || user.email}
+                    </span>
                   </button>
 
-                {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg">
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-2 w-full px-4 py-2 text-sm rounded-md hover:bg-gray-100 transition"
-                    >
-                      <LogOut size={16} />
-                      Logout
-                    </button>
-                  </div>
-                )}
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                      <div className="p-3 border-b border-gray-200">
+                        <p className="text-sm font-semibold text-gray-800">
+                          {user.name || "User"}
+                        </p>
+                        <p className="text-xs text-gray-500">{user.email}</p>
+                      </div>
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-gray-50 transition"
+                      >
+                        <UserCircle size={18} className="text-gray-600" />
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-gray-50 transition text-red-600"
+                      >
+                        <LogOut size={18} />
+                        Logout
+                      </button>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
@@ -197,6 +227,7 @@ const Navbar = () => {
             >
               Home
             </Link>
+
             {user && (
               <Link
                 to="/dashboard"
@@ -206,6 +237,17 @@ const Navbar = () => {
                 Dashboard
               </Link>
             )}
+
+            {user.role === "student" && (
+              <Link
+                className="nav-link"
+                to="/student/tasks"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                My Tasks
+              </Link>
+            )}
+
             <Link
               to="/tips"
               className="nav-link"

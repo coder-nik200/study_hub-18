@@ -11,6 +11,7 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "student",
   });
 
   const [loading, setLoading] = useState(false);
@@ -189,6 +190,37 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
                       ) : (
                         <Eye size={16} />
                       )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* ROLE SELECTION */}
+                <div>
+                  <label className="mb-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    <User size={16} /> I am a
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, role: "student" })}
+                      className={`px-4 py-3 rounded-xl border-2 font-medium transition ${
+                        formData.role === "student"
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                          : "border-slate-300 bg-white text-slate-700 hover:border-indigo-300"
+                      }`}
+                    >
+                      🎓 Student
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, role: "expert" })}
+                      className={`px-4 py-3 rounded-xl border-2 font-medium transition ${
+                        formData.role === "expert"
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                          : "border-slate-300 bg-white text-slate-700 hover:border-indigo-300"
+                      }`}
+                    >
+                      👨‍🏫 Expert
                     </button>
                   </div>
                 </div>

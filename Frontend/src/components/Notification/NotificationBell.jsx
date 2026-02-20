@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell, Check, CheckCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   getNotifications,
   markNotificationAsRead,
@@ -14,6 +15,7 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   // Fetch notifications and unread count
   const fetchNotifications = async () => {
@@ -160,7 +162,15 @@ export default function NotificationBell() {
                     className={`p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
                       !notification.read ? "bg-indigo-50/50" : ""
                     }`}
-                    onClick={() => !notification.read && handleMarkAsRead(notification._id)}
+                    onClick={() => {
+                      if (!notification.read) {
+                        handleMarkAsRead(notification._id);
+                      }
+                      if (notification.task?._id) {
+                        navigate("/student/tasks");
+                        setIsOpen(false);
+                      }
+                    }}
                   >
                     <div className="flex items-start gap-3">
                       <div

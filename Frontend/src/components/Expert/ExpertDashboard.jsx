@@ -25,6 +25,9 @@ import {
   getTaskAssignments,
 } from "../../api/axios";
 import { toast } from "react-toastify";
+import SimpleBarChart from "../Charts/SimpleBarChart";
+import SimplePieChart from "../Charts/SimplePieChart";
+import Spinner from "../Spinner";
 
 export default function ExpertDashboard() {
   const [tasks, setTasks] = useState([]);
@@ -99,12 +102,54 @@ export default function ExpertDashboard() {
           )
         : 0,
     totalCompleted: tasks.filter((t) => t.progress?.completionRate === 100).length,
+    overdueTasks: tasks.filter((t) => new Date(t.dueDate) < new Date() && t.progress?.completionRate < 100).length,
   };
+
+  // Calculate chart data
+  const statusDistribution = [
+    { label: "Completed", value: tasks.reduce((sum, t) => sum + (t.progress?.completed || 0), 0) },
+    { label: "In Progress", value: tasks.reduce((sum, t) => sum + (t.progress?.inProgress || 0), 0) },
+    { label: "Pending", value: tasks.reduce((sum, t) => sum + (t.progress?.pending || 0), 0) },
+  ];
+
+  // Performance leaderboard (students with most completed tasks)
+  const studentPerformance = {};
+  tasks.forEach((task) => {
+    task.assignedTo?.forEach((student) => {
+      if (!studentPerformance[student._id]) {
+        studentPerformance[student._id] = {
+          name: student.name,
+          completed: 0,
+          total: 0,
+        };
+      }
+      studentPerformance[student._id].total++;
+      if (task.progress?.completionRate === 100) {
+        studentPerformance[student._id].completed++;
+      }
+    });
+  });
+
+  const leaderboard = Object.values(studentPerformance)
+    .map((student) => ({
+      ...student,
+      completionRate: student.total > 0 ? Math.round((student.completed / student.total) * 100) : 0,
+    }))
+    .sort((a, b) => b.completionRate - a.completionRate)
+    .slice(0, 10);
+
+  const leaderboardChartData = leaderboard.map((student) => ({
+    label: student.name,
+    value: student.completionRate,
+  }));
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <div className="text-center">
+          <Spinner size="lg" color="indigo" />
+          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -206,7 +251,103 @@ export default function ExpertDashboard() {
               <CheckCircle size={32} className="text-green-600 opacity-50" />
             </div>
           </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-red-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Overdue Tasks</p>
+                <p className="text-3xl font-bold text-red-600 mt-1">
+                  {overallStats.overdueTasks}
+                </p>
+              </div>
+              <AlertCircle size={32} className="text-red-600 opacity-50" />
+            </div>
+          </div>
         </div>
+
+        {/* Analytics Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <SimplePieChart
+            data={statusDistribution}
+            title="Task Status Distribution"
+          />
+          <SimpleBarChart
+            data={leaderboardChartData.length > 0 ? leaderboardChartData : [{ label: "No data", value: 0 }]}
+            title="Top Performers (Completion Rate %)"
+          />
+        </div>
+
+        {/* Performance Leaderboard */}
+        {leaderboard.length > 0 && (
+          <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Award size={24} className="text-indigo-600" />
+              Performance Leaderboard
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Rank</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Student</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Completed</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Total</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Completion Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {leaderboard.map((student, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-bold ${
+                            index === 0
+                              ? "bg-yellow-100 text-yellow-700"
+                              : index === 1
+                              ? "bg-gray-100 text-gray-700"
+                              : index === 2
+                              ? "bg-orange-100 text-orange-700"
+                              : "bg-gray-50 text-gray-600"
+                          }`}
+                        >
+                          #{index + 1}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 font-medium text-gray-800">{student.name}</td>
+                      <td className="px-4 py-3 text-green-600 font-semibold">{student.completed}</td>
+                      <td className="px-4 py-3 text-gray-600">{student.total}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-indigo-600 h-2 rounded-full"
+                              style={{ width: `${student.completionRate}%` }}
+                            />
+                          </div>
+                          <span className="text-sm font-semibold text-gray-800 w-12 text-right">
+                            {student.completionRate}%
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Overdue Tasks Alert */}
+        {overallStats.overdueTasks > 0 && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-lg">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="text-red-600" size={20} />
+              <p className="text-red-800 font-semibold">
+                You have {overallStats.overdueTasks} overdue task{overallStats.overdueTasks !== 1 ? "s" : ""}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Filters and Search */}
         <div className="bg-white rounded-xl p-4 shadow-lg mb-6 flex flex-col md:flex-row gap-4">

@@ -4,32 +4,38 @@ const jwt = require("jsonwebtoken");
 
 const getSignup = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, role } = req.body;
 
     // 1️⃣ Validate
     if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // 2️⃣ Password match check
+    // 2️⃣ Validate role
+    if (role && !["student", "expert"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+
+    // 3️⃣ Password match check
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    // 3️⃣ Check existing user
+    // 4️⃣ Check existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // 4️⃣ Hash password
+    // 5️⃣ Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 5️⃣ Create user (NO confirmPassword)
+    // 6️⃣ Create user
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
+      role: role || "student",
     });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -45,6 +51,7 @@ const getSignup = async (req, res) => {
         _id: user._id,
         email: user.email,
         name: user.name,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -88,6 +95,10 @@ const getLogin = async (req, res) => {
         _id: user._id,
         email: user.email,
         name: user.name,
+        role: user.role,
+        avatar: user.avatar,
+        bio: user.bio,
+        createdAt: user.createdAt,
       },
     });
   } catch (error) {

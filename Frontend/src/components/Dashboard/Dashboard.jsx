@@ -1,5 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Plus, Calendar, CheckSquare, TrendingUp } from "lucide-react";
+import {
+  Plus,
+  Calendar,
+  CheckSquare,
+  TrendingUp,
+  AlertCircle,
+} from "lucide-react";
+import { Navigate } from "react-router-dom";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import CalendarView from "./CalendarView";
@@ -11,29 +18,52 @@ import {
   deleteTask as deleteTaskAPI,
 } from "../../api/axios";
 import { UserContext } from "../../context/UserContext";
+import Spinner from "../Spinner";
 
 const Dashboard = () => {
-  const { user } = useContext(UserContext);
+  const { user, loading: userLoading } = useContext(UserContext);
 
   const [tasks, setTasks] = useState([]);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [activeView, setActiveView] = useState("dashboard");
+  const [loading, setLoading] = useState(true);
 
   /* ---------------- TASK ACTIONS ---------------- */
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (!userLoading && user) {
+      fetchTasks();
+    }
+  }, [userLoading, user]);
 
   const fetchTasks = async () => {
     try {
+      setLoading(true);
       const res = await getTasks();
       setTasks(res.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  // Role-based access control
+  if (userLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <Spinner size="lg" color="indigo" />
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/" state={{ openLogin: true }} replace />;
+  }
 
   const addTask = async (taskData) => {
     try {
@@ -83,8 +113,19 @@ const Dashboard = () => {
 
   /* ---------------- UI ---------------- */
 
+  if (loading) {
+    return (
+      <div className="min-h-screen py-8 sm:py-10 bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Spinner size="lg" color="indigo" />
+          <p className="mt-4 text-gray-600">Loading your tasks...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen py-8 sm:py-10 bg-gray-50">
+    <div className="min-h-screen py-8 sm:py-10 bg-gradient-to-br from-indigo-50 via-white to-indigo-100">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-300 pb-5 mb-8 gap-5">
@@ -93,7 +134,9 @@ const Dashboard = () => {
               Welcome back, {user?.name || "User"}!
             </h1>
             <p className="text-gray-500 text-base sm:text-lg pt-2">
-              Let's make today productive 🚀
+              {user?.role === "expert"
+                ? "Manage tasks and track student progress"
+                : "Let's make today productive 🚀"}
             </p>
           </div>
 
@@ -128,13 +171,30 @@ const Dashboard = () => {
         {/* Dashboard View */}
         {activeView === "dashboard" && (
           <div className="flex flex-col gap-6 sm:gap-8">
-            <button
-              onClick={() => setShowTaskForm(true)}
-              className="flex items-center gap-2 w-fit bg-indigo-600 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg font-medium hover:bg-indigo-700 transition"
-            >
-              <Plus size={20} />
-              Add New Task
-            </button>
+            {/* {user?.role === "student" && (
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="text-blue-600" size={20} />
+                  <p className="text-blue-800">
+                    As a student, you can only view tasks assigned by experts. Visit{" "}
+                    <a href="/student/tasks" className="font-semibold underline">
+                      My Tasks
+                    </a>{" "}
+                    to see assigned tasks.
+                  </p>
+                </div>
+              </div>
+            )} */}
+            {/* {user?.role === "expert" && ( */}
+            {user && (
+              <button
+                onClick={() => setShowTaskForm(true)}
+                className="flex items-center gap-2 w-fit bg-indigo-600 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg font-medium hover:bg-indigo-700 transition shadow-lg"
+              >
+                <Plus size={20} />
+                Add New Task
+              </button>
+            )}
 
             <TaskList
               tasks={tasks}
