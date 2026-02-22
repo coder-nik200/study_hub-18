@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { User, Mail, Calendar, Edit2, Save, X, Upload, Loader } from "lucide-react";
+import {
+  User,
+  Mail,
+  Calendar,
+  Edit2,
+  Save,
+  X,
+  Upload,
+  Loader,
+} from "lucide-react";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import api from "../api/axios";
@@ -39,7 +48,7 @@ export default function Profile() {
         setAvatarPreview(
           userData.avatar.startsWith("http")
             ? userData.avatar
-            : `http://localhost:3000/${userData.avatar}`
+            : `http://localhost:3000/${userData.avatar}`,
         );
       }
     } catch (error) {
@@ -189,7 +198,9 @@ export default function Profile() {
                 <div className="bg-gray-50 rounded-xl px-4 py-3 text-gray-800">
                   {formData.email}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Email cannot be changed
+                </p>
               </div>
 
               {/* Role */}
@@ -299,4 +310,3 @@ export default function Profile() {
     </div>
   );
 }
-

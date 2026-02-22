@@ -56,8 +56,8 @@ export default function NotificationBell() {
       await markNotificationAsRead(notificationId);
       setNotifications((prev) =>
         prev.map((notif) =>
-          notif._id === notificationId ? { ...notif, read: true } : notif
-        )
+          notif._id === notificationId ? { ...notif, read: true } : notif,
+        ),
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
@@ -70,7 +70,9 @@ export default function NotificationBell() {
   const handleMarkAllAsRead = async () => {
     try {
       await markAllNotificationsAsRead();
-      setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
+      setNotifications((prev) =>
+        prev.map((notif) => ({ ...notif, read: true })),
+      );
       setUnreadCount(0);
       toast.success("All notifications marked as read");
     } catch (error) {
@@ -110,8 +112,10 @@ export default function NotificationBell() {
 
     if (diffInSeconds < 60) return "Just now";
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800)
+      return `${Math.floor(diffInSeconds / 86400)}d ago`;
     return notifDate.toLocaleDateString();
   };
 
@@ -175,7 +179,9 @@ export default function NotificationBell() {
                     <div className="flex items-start gap-3">
                       <div
                         className={`w-2 h-2 rounded-full mt-2 ${
-                          !notification.read ? "bg-indigo-600" : "bg-transparent"
+                          !notification.read
+                            ? "bg-indigo-600"
+                            : "bg-transparent"
                         }`}
                       />
                       <div className="flex-1 min-w-0">
@@ -185,7 +191,7 @@ export default function NotificationBell() {
                           </h4>
                           <span
                             className={`text-xs px-2 py-0.5 rounded-full ${getPriorityColor(
-                              notification.priority
+                              notification.priority,
                             )}`}
                           >
                             {notification.priority}
@@ -196,7 +202,10 @@ export default function NotificationBell() {
                         </p>
                         {notification.task && (
                           <p className="text-xs text-gray-500 mb-1">
-                            Due: {new Date(notification.task.dueDate).toLocaleDateString()}
+                            Due:{" "}
+                            {new Date(
+                              notification.task.dueDate,
+                            ).toLocaleDateString()}
                           </p>
                         )}
                         <div className="flex items-center justify-between mt-2">
@@ -240,4 +249,3 @@ export default function NotificationBell() {
     </div>
   );
 }
-

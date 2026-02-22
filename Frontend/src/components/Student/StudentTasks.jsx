@@ -12,6 +12,7 @@ import { getStudentTaskAssignments, updateTaskStatus } from "../../api/axios";
 import { toast } from "react-toastify";
 import Spinner from "../Spinner";
 import TaskDetail from "./TaskDeatil";
+import StatsCard from "./StatsCard";
 
 export default function StudentTasks() {
   const [tasks, setTasks] = useState([]);
@@ -95,189 +96,167 @@ export default function StudentTasks() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {/* Total Tasks */}
-          <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm opacity-90">Total Tasks</p>
-                <h2 className="text-3xl font-bold mt-1">{tasks.length}</h2>
-              </div>
-              <div className="bg-white/20 p-3 rounded-xl">
-                <FileText size={28} />
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            title="Total Tasks"
+            value={tasks.length}
+            icon={FileText}
+            gradient="from-indigo-500 to-purple-600"
+          />
 
-          {/* Completed */}
-          <div className="bg-gradient-to-br from-green-400 to-emerald-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm opacity-90">Completed</p>
-                <h2 className="text-3xl font-bold mt-1">
-                  {tasks.filter((t) => t.status === "Completed").length}
-                </h2>
-              </div>
-              <div className="bg-white/20 p-3 rounded-xl">
-                <CheckCircle size={28} />
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            title="Completed"
+            value={tasks.filter((t) => t.status === "Completed").length}
+            icon={CheckCircle}
+            gradient="from-green-400 to-emerald-600"
+          />
 
-          {/* In Progress */}
-          <div className="bg-gradient-to-br from-blue-400 to-cyan-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm opacity-90">In Progress</p>
-                <h2 className="text-3xl font-bold mt-1">
-                  {tasks.filter((t) => t.status === "In Progress").length}
-                </h2>
-              </div>
-              <div className="bg-white/20 p-3 rounded-xl">
-                <Clock size={28} />
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            title="In Progress"
+            value={tasks.filter((t) => t.status === "In Progress").length}
+            icon={Clock}
+            gradient="from-blue-400 to-cyan-600"
+          />
 
-          {/* Pending */}
-          <div className="bg-gradient-to-br from-orange-400 to-red-500 text-white rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm opacity-90">Pending</p>
-                <h2 className="text-3xl font-bold mt-1">
-                  {tasks.filter((t) => t.status === "Pending").length}
-                </h2>
-              </div>
-              <div className="bg-white/20 p-3 rounded-xl">
-                <AlertCircle size={28} />
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            title="Pending"
+            value={tasks.filter((t) => t.status === "Pending").length}
+            icon={AlertCircle}
+            gradient="from-orange-400 to-red-500"
+          />
         </div>
 
         {/* Tasks Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-          {tasks.map((assignment) => {
-            const task = assignment.task;
-            const daysUntilDue = getDaysUntilDue(task.dueDate);
-            const overdue = isOverdue(task.dueDate);
+          {tasks
+            .filter((assignment) => assignment?.task) // ✅ remove broken ones
+            .map((assignment) => {
+              const task = assignment.task;
 
-            return (
-              <div
-                key={assignment._id}
-                className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-md border border-white/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
-              >
-                {/* Top Gradient Strip */}
-                <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+              const daysUntilDue = task?.dueDate
+                ? getDaysUntilDue(task.dueDate)
+                : null;
 
-                <div className="p-6">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition">
-                        {task.title}
-                      </h3>
+              const overdue = task?.dueDate ? isOverdue(task.dueDate) : false;
 
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <div className="bg-indigo-100 p-1.5 rounded-lg">
-                          <User size={14} className="text-indigo-600" />
+              return (
+                <div
+                  key={assignment._id}
+                  className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-md border border-white/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                >
+                  {/* Top Gradient Strip */}
+                  <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+                  <div className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition">
+                          {task.title}
+                        </h3>
+
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <div className="bg-indigo-100 p-1.5 rounded-lg">
+                            <User size={14} className="text-indigo-600" />
+                          </div>
+                          <span>{task.createdBy?.name || "Expert"}</span>
                         </div>
-                        <span>{task.createdBy?.name || "Expert"}</span>
                       </div>
-                    </div>
 
-                    <div
-                      className={`px-3 py-1 rounded-full text-xs font-semibold border shadow-sm ${getStatusColor(
-                        assignment.status,
-                      )}`}
-                    >
-                      {assignment.status}
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  {task.description && (
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
-                      {task.description}
-                    </p>
-                  )}
-
-                  {/* Due Date */}
-                  <div className="flex items-center gap-2 text-sm mb-4">
-                    <div className="bg-gray-100 p-1.5 rounded-lg">
-                      <Calendar size={16} className="text-gray-500" />
-                    </div>
-                    <span
-                      className={`font-medium ${
-                        overdue ? "text-red-600" : "text-gray-600"
-                      }`}
-                    >
-                      {overdue
-                        ? `Overdue by ${Math.abs(daysUntilDue)} day${
-                            Math.abs(daysUntilDue) !== 1 ? "s" : ""
-                          }`
-                        : daysUntilDue === 0
-                          ? "Due today"
-                          : daysUntilDue === 1
-                            ? "Due tomorrow"
-                            : `Due in ${daysUntilDue} days`}
-                    </span>
-                  </div>
-
-                  {/* Priority */}
-                  <div className="mb-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
-                        task.priority === "high"
-                          ? "bg-gradient-to-r from-red-400 to-pink-500 text-white"
-                          : task.priority === "medium"
-                            ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
-                            : "bg-gradient-to-r from-blue-400 to-indigo-500 text-white"
-                      }`}
-                    >
-                      {task.priority?.toUpperCase() || "MEDIUM"}
-                    </span>
-                  </div>
-
-                  {/* Attachments */}
-                  {task.attachments && task.attachments.length > 0 && (
-                    <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
-                      <div className="bg-purple-100 p-1.5 rounded-lg">
-                        <FileText size={14} className="text-purple-600" />
-                      </div>
-                      <span>{task.attachments.length} attachment(s)</span>
-                    </div>
-                  )}
-
-                  {/* Actions */}
-                  <div className="flex gap-3 mt-6">
-                    <button
-                      onClick={() => setSelectedTask(assignment)}
-                      className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2.5 rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow-md"
-                    >
-                      <Eye size={16} />
-                      View Details
-                    </button>
-
-                    {assignment.status !== "Completed" && (
-                      <button
-                        onClick={() =>
-                          handleStatusChange(
-                            task._id,
-                            assignment.status === "Pending"
-                              ? "In Progress"
-                              : "Completed",
-                          )
-                        }
-                        className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 hover:scale-105 transition-all duration-300 text-sm shadow-sm"
+                      <div
+                        className={`px-3 py-1 rounded-full text-xs font-semibold border shadow-sm ${getStatusColor(
+                          assignment.status,
+                        )}`}
                       >
-                        {assignment.status === "Pending" ? "Start" : "Complete"}
-                      </button>
+                        {assignment.status}
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    {task.description && (
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                        {task.description}
+                      </p>
                     )}
+
+                    {/* Due Date */}
+                    <div className="flex items-center gap-2 text-sm mb-4">
+                      <div className="bg-gray-100 p-1.5 rounded-lg">
+                        <Calendar size={16} className="text-gray-500" />
+                      </div>
+                      <span
+                        className={`font-medium ${
+                          overdue ? "text-red-600" : "text-gray-600"
+                        }`}
+                      >
+                        {overdue
+                          ? `Overdue by ${Math.abs(daysUntilDue)} day${
+                              Math.abs(daysUntilDue) !== 1 ? "s" : ""
+                            }`
+                          : daysUntilDue === 0
+                            ? "Due today"
+                            : daysUntilDue === 1
+                              ? "Due tomorrow"
+                              : `Due in ${daysUntilDue} days`}
+                      </span>
+                    </div>
+
+                    {/* Priority */}
+                    <div className="mb-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
+                          task.priority === "high"
+                            ? "bg-gradient-to-r from-red-400 to-pink-500 text-white"
+                            : task.priority === "medium"
+                              ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
+                              : "bg-gradient-to-r from-blue-400 to-indigo-500 text-white"
+                        }`}
+                      >
+                        {task.priority?.toUpperCase() || "MEDIUM"}
+                      </span>
+                    </div>
+
+                    {/* Attachments */}
+                    {task.attachments && task.attachments.length > 0 && (
+                      <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
+                        <div className="bg-purple-100 p-1.5 rounded-lg">
+                          <FileText size={14} className="text-purple-600" />
+                        </div>
+                        <span>{task.attachments.length} attachment(s)</span>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex gap-3 mt-6">
+                      <button
+                        onClick={() => setSelectedTask(assignment)}
+                        className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2.5 rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow-md"
+                      >
+                        <Eye size={16} />
+                        View Details
+                      </button>
+
+                      {assignment.status !== "Completed" && (
+                        <button
+                          onClick={() =>
+                            handleStatusChange(
+                              task._id,
+                              assignment.status === "Pending"
+                                ? "In Progress"
+                                : "Completed",
+                            )
+                          }
+                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 hover:scale-105 transition-all duration-300 text-sm shadow-sm"
+                        >
+                          {assignment.status === "Pending"
+                            ? "Start"
+                            : "Complete"}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
 
         {tasks.length === 0 && (

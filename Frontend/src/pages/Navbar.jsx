@@ -146,7 +146,7 @@ const Navbar = () => {
                             : `http://localhost:3000/${user.avatar}`
                         }
                         alt={user.name}
-                        className="w-8 h-8 rounded-full object-cover border-2 border-indigo-600"
+                        className="w-8 h-8 rounded-full object-cover border-2"
                       />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
@@ -227,6 +227,16 @@ const Navbar = () => {
             >
               Home
             </Link>
+
+            {user.role === "expert" && (
+              <Link
+                to="/expert"
+                className="nav-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Expert Panel
+              </Link>
+            )}
 
             {user && (
               <Link

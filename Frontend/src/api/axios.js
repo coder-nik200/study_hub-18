@@ -25,15 +25,18 @@ export const updateAssignmentGrade = (assignmentId, data) =>
 export const updateTaskStatus = (taskId, data) =>
   api.patch(`/tasks/${taskId}/status`, data);
 export const getStudentTaskAssignments = () => api.get("/student/tasks");
-export const getTaskAssignments = (taskId) => api.get(`/tasks/${taskId}/assignments`);
+export const getTaskAssignments = (taskId) =>
+  api.get(`/tasks/${taskId}/assignments`);
 
 // Notifications
 export const getNotifications = (unreadOnly = false) =>
   api.get(`/notifications${unreadOnly ? "?unreadOnly=true" : ""}`);
 export const markNotificationAsRead = (notificationId) =>
   api.patch(`/notifications/${notificationId}/read`);
-export const markAllNotificationsAsRead = () => api.patch("/notifications/read-all");
-export const getUnreadNotificationCount = () => api.get("/notifications/unread-count");
+export const markAllNotificationsAsRead = () =>
+  api.patch("/notifications/read-all");
+export const getUnreadNotificationCount = () =>
+  api.get("/notifications/unread-count");
 
 // Profile
 export const getProfile = () => api.get("/profile");

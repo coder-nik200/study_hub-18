@@ -82,7 +82,9 @@ export default function ExpertDashboard() {
 
   // Filter tasks
   const filteredTasks = tasks.filter((task) => {
-    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
     const matchesFilter =
       filter === "all" ||
       (filter === "completed" && task.progress?.completionRate === 100) ||
@@ -94,22 +96,40 @@ export default function ExpertDashboard() {
   // Calculate overall statistics
   const overallStats = {
     totalTasks: tasks.length,
-    totalStudents: new Set(tasks.flatMap((t) => t.assignedTo?.map((s) => s._id) || [])).size,
+    totalStudents: new Set(
+      tasks.flatMap((t) => t.assignedTo?.map((s) => s._id) || []),
+    ).size,
     avgCompletionRate:
       tasks.length > 0
         ? Math.round(
-            tasks.reduce((sum, t) => sum + (t.progress?.completionRate || 0), 0) / tasks.length
+            tasks.reduce(
+              (sum, t) => sum + (t.progress?.completionRate || 0),
+              0,
+            ) / tasks.length,
           )
         : 0,
-    totalCompleted: tasks.filter((t) => t.progress?.completionRate === 100).length,
-    overdueTasks: tasks.filter((t) => new Date(t.dueDate) < new Date() && t.progress?.completionRate < 100).length,
+    totalCompleted: tasks.filter((t) => t.progress?.completionRate === 100)
+      .length,
+    overdueTasks: tasks.filter(
+      (t) =>
+        new Date(t.dueDate) < new Date() && t.progress?.completionRate < 100,
+    ).length,
   };
 
   // Calculate chart data
   const statusDistribution = [
-    { label: "Completed", value: tasks.reduce((sum, t) => sum + (t.progress?.completed || 0), 0) },
-    { label: "In Progress", value: tasks.reduce((sum, t) => sum + (t.progress?.inProgress || 0), 0) },
-    { label: "Pending", value: tasks.reduce((sum, t) => sum + (t.progress?.pending || 0), 0) },
+    {
+      label: "Completed",
+      value: tasks.reduce((sum, t) => sum + (t.progress?.completed || 0), 0),
+    },
+    {
+      label: "In Progress",
+      value: tasks.reduce((sum, t) => sum + (t.progress?.inProgress || 0), 0),
+    },
+    {
+      label: "Pending",
+      value: tasks.reduce((sum, t) => sum + (t.progress?.pending || 0), 0),
+    },
   ];
 
   // Performance leaderboard (students with most completed tasks)
@@ -133,7 +153,10 @@ export default function ExpertDashboard() {
   const leaderboard = Object.values(studentPerformance)
     .map((student) => ({
       ...student,
-      completionRate: student.total > 0 ? Math.round((student.completed / student.total) * 100) : 0,
+      completionRate:
+        student.total > 0
+          ? Math.round((student.completed / student.total) * 100)
+          : 0,
     }))
     .sort((a, b) => b.completionRate - a.completionRate)
     .slice(0, 10);
@@ -157,40 +180,49 @@ export default function ExpertDashboard() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white/70 backdrop-blur-lg shadow-xl p-6 border-r">
-        <h2 className="text-2xl font-bold text-indigo-600 mb-10">Expert Panel</h2>
+      <aside className="hidden md:flex md:flex-col w-72 h-screen sticky top-0 bg-white/70 backdrop-blur-xl border-r border-gray-200 shadow-2xl p-6">
+        {/* Logo / Title */}
+        <h2 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12 mt-14">
+          Expert Panel
+        </h2>
 
-        <div className="space-y-6 text-gray-700">
-          <div className="flex items-center gap-3 cursor-pointer hover:text-indigo-600">
-            <ClipboardList size={20} />
-            Dashboard
+        {/* Navigation */}
+        <div className="flex flex-col gap-4 text-gray-700">
+          {/* Dashboard */}
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 hover:shadow-sm">
+            <ClipboardList size={20} className="text-indigo-500" />
+            <span className="font-medium">Dashboard</span>
           </div>
 
+          {/* Create Task */}
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-3 hover:text-indigo-600 w-full text-left"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 hover:shadow-sm text-left"
           >
-            <PlusCircle size={20} />
-            Create Task
+            <PlusCircle size={20} className="text-green-500" />
+            <span className="font-medium">Create Task</span>
           </button>
 
+          {/* Analysis Mode */}
           <Link
             to="/analysis"
             state={{ tasks }}
-            className="flex items-center gap-3 hover:text-indigo-600"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 hover:shadow-sm"
           >
-            <ChartColumnDecreasing size={20} />
-            Analysis Mode
+            <ChartColumnDecreasing size={20} className="text-purple-500" />
+            <span className="font-medium">Analysis Mode</span>
           </Link>
         </div>
       </aside>
 
       {/* Main */}
       <div className="flex-1 p-10">
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center mb-10 mt-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Task Dashboard</h1>
-            <p className="text-gray-600 mt-1">Monitor and manage student progress</p>
+            <p className="text-gray-600 mt-1">
+              Monitor and manage student progress
+            </p>
           </div>
 
           <button
@@ -272,7 +304,11 @@ export default function ExpertDashboard() {
             title="Task Status Distribution"
           />
           <SimpleBarChart
-            data={leaderboardChartData.length > 0 ? leaderboardChartData : [{ label: "No data", value: 0 }]}
+            data={
+              leaderboardChartData.length > 0
+                ? leaderboardChartData
+                : [{ label: "No data", value: 0 }]
+            }
             title="Top Performers (Completion Rate %)"
           />
         </div>
@@ -288,11 +324,21 @@ export default function ExpertDashboard() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Rank</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Student</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Completed</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Total</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Completion Rate</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Rank
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Student
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Completed
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Total
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Completion Rate
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -304,18 +350,24 @@ export default function ExpertDashboard() {
                             index === 0
                               ? "bg-yellow-100 text-yellow-700"
                               : index === 1
-                              ? "bg-gray-100 text-gray-700"
-                              : index === 2
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-gray-50 text-gray-600"
+                                ? "bg-gray-100 text-gray-700"
+                                : index === 2
+                                  ? "bg-orange-100 text-orange-700"
+                                  : "bg-gray-50 text-gray-600"
                           }`}
                         >
                           #{index + 1}
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-medium text-gray-800">{student.name}</td>
-                      <td className="px-4 py-3 text-green-600 font-semibold">{student.completed}</td>
-                      <td className="px-4 py-3 text-gray-600">{student.total}</td>
+                      <td className="px-4 py-3 font-medium text-gray-800">
+                        {student.name}
+                      </td>
+                      <td className="px-4 py-3 text-green-600 font-semibold">
+                        {student.completed}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {student.total}
+                      </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <div className="flex-1 bg-gray-200 rounded-full h-2">
@@ -343,7 +395,8 @@ export default function ExpertDashboard() {
             <div className="flex items-center gap-2">
               <AlertCircle className="text-red-600" size={20} />
               <p className="text-red-800 font-semibold">
-                You have {overallStats.overdueTasks} overdue task{overallStats.overdueTasks !== 1 ? "s" : ""}
+                You have {overallStats.overdueTasks} overdue task
+                {overallStats.overdueTasks !== 1 ? "s" : ""}
               </p>
             </div>
           </div>
@@ -386,14 +439,16 @@ export default function ExpertDashboard() {
               onClick={() => handleTaskClick(task._id)}
             >
               <div className="flex items-start justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-800 flex-1">{task.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-800 flex-1">
+                  {task.title}
+                </h2>
                 <span
                   className={`px-2 py-1 rounded text-xs font-medium ${
                     task.priority === "high"
                       ? "bg-red-100 text-red-700"
                       : task.priority === "medium"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-blue-100 text-blue-700"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-blue-100 text-blue-700"
                   }`}
                 >
                   {task.priority?.toUpperCase() || "MEDIUM"}
@@ -459,7 +514,9 @@ export default function ExpertDashboard() {
         {filteredTasks.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
             <ClipboardList size={48} className="mx-auto text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No tasks found</h3>
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+              No tasks found
+            </h3>
             <p className="text-gray-500">
               {searchTerm || filter !== "all"
                 ? "Try adjusting your filters"
@@ -477,19 +534,24 @@ export default function ExpertDashboard() {
               {/* Header */}
               <div className="flex items-start justify-between mb-6">
                 <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-gray-800 mb-2">{taskDetails.task.title}</h2>
+                  <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                    {taskDetails.task.title}
+                  </h2>
                   <div className="flex items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
                       <Calendar size={16} />
-                      <span>Due: {new Date(taskDetails.task.dueDate).toLocaleString()}</span>
+                      <span>
+                        Due:{" "}
+                        {new Date(taskDetails.task.dueDate).toLocaleString()}
+                      </span>
                     </div>
                     <span
                       className={`px-2 py-1 rounded text-xs font-medium ${
                         taskDetails.task.priority === "high"
                           ? "bg-red-100 text-red-700"
                           : taskDetails.task.priority === "medium"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-blue-100 text-blue-700"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-blue-100 text-blue-700"
                       }`}
                     >
                       {taskDetails.task.priority?.toUpperCase() || "MEDIUM"}
@@ -538,7 +600,9 @@ export default function ExpertDashboard() {
               {/* Description */}
               {taskDetails.task.description && (
                 <div className="mb-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">Description</h3>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Description
+                  </h3>
                   <p className="text-gray-600 whitespace-pre-wrap">
                     {taskDetails.task.description}
                   </p>
@@ -547,7 +611,9 @@ export default function ExpertDashboard() {
 
               {/* Student Progress Table */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-800 mb-4">Student Progress</h3>
+                <h3 className="font-semibold text-gray-800 mb-4">
+                  Student Progress
+                </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
@@ -593,8 +659,8 @@ export default function ExpertDashboard() {
                                 assignment.status === "Completed"
                                   ? "bg-green-100 text-green-700"
                                   : assignment.status === "In Progress"
-                                  ? "bg-blue-100 text-blue-700"
-                                  : "bg-gray-100 text-gray-700"
+                                    ? "bg-blue-100 text-blue-700"
+                                    : "bg-gray-100 text-gray-700"
                               }`}
                             >
                               {assignment.status}
@@ -602,7 +668,9 @@ export default function ExpertDashboard() {
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-600">
                             {assignment.submittedAt
-                              ? new Date(assignment.submittedAt).toLocaleDateString()
+                              ? new Date(
+                                  assignment.submittedAt,
+                                ).toLocaleDateString()
                               : "-"}
                           </td>
                           <td className="px-4 py-3">
@@ -661,7 +729,12 @@ export default function ExpertDashboard() {
 }
 
 // Grade Input Component
-function GradeInput({ assignmentId, currentScore, currentFeedback, onGradeUpdate }) {
+function GradeInput({
+  assignmentId,
+  currentScore,
+  currentFeedback,
+  onGradeUpdate,
+}) {
   const [score, setScore] = useState(currentScore || "");
   const [feedback, setFeedback] = useState(currentFeedback || "");
   const [isEditing, setIsEditing] = useState(false);
