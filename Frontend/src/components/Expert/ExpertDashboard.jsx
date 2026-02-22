@@ -15,6 +15,7 @@ import {
   Calendar,
   Award,
   Target,
+  Search,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import CreateTaskModal from "./CreateTaskModel";
@@ -28,6 +29,10 @@ import { toast } from "react-toastify";
 import SimpleBarChart from "../Charts/SimpleBarChart";
 import SimplePieChart from "../Charts/SimplePieChart";
 import Spinner from "../Spinner";
+import OverallStats from "./OverallStats";
+import LeaderboardTable from "./LeaderboardTable";
+import TaskCard from "./TaskCard";
+import TaskDetailsModal from "./TaskDetailsModel";
 
 export default function ExpertDashboard() {
   const [tasks, setTasks] = useState([]);
@@ -178,216 +183,91 @@ export default function ExpertDashboard() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex">
-      {/* Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-72 h-screen sticky top-0 bg-white/70 backdrop-blur-xl border-r border-gray-200 shadow-2xl p-6">
-        {/* Logo / Title */}
-        <h2 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-12 mt-14">
-          Expert Panel
-        </h2>
-
-        {/* Navigation */}
-        <div className="flex flex-col gap-4 text-gray-700">
-          {/* Dashboard */}
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 hover:shadow-sm">
-            <ClipboardList size={20} className="text-indigo-500" />
-            <span className="font-medium">Dashboard</span>
-          </div>
-
-          {/* Create Task */}
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 hover:shadow-sm text-left"
-          >
-            <PlusCircle size={20} className="text-green-500" />
-            <span className="font-medium">Create Task</span>
-          </button>
-
-          {/* Analysis Mode */}
-          <Link
-            to="/analysis"
-            state={{ tasks }}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 hover:shadow-sm"
-          >
-            <ChartColumnDecreasing size={20} className="text-purple-500" />
-            <span className="font-medium">Analysis Mode</span>
-          </Link>
-        </div>
-      </aside>
-
+    <div className="relative min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex flex-col md:flex-row">
       {/* Main */}
-      <div className="flex-1 p-10">
-        <div className="flex justify-between items-center mb-10 mt-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">Task Dashboard</h1>
-            <p className="text-gray-600 mt-1">
+      <div className="flex-1 p-4 sm:p-6 md:p-10">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-6 mb-8">
+          <div className="mt-6">
+            <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
+              Task Dashboard
+            </h1>
+            <p className="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-lg">
               Monitor and manage student progress
             </p>
           </div>
 
+          {/* New Task Button */}
           <button
             onClick={() => setShowModal(true)}
-            className="bg-indigo-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-indigo-700 shadow-lg"
+            className="group relative inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 ease-out text-sm sm:text-base"
           >
-            <PlusCircle size={18} />
-            New Task
+            <PlusCircle
+              size={18}
+              className="transition-transform duration-300 group-hover:rotate-90"
+            />
+            <span className="font-semibold tracking-wide">New Task</span>
+            <span className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition duration-300"></span>
           </button>
         </div>
 
         {/* Overall Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Total Tasks</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">
-                  {overallStats.totalTasks}
-                </p>
-              </div>
-              <ClipboardList size={32} className="text-indigo-600 opacity-50" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Total Students</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">
-                  {overallStats.totalStudents}
-                </p>
-              </div>
-              <Users size={32} className="text-indigo-600 opacity-50" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Avg Completion</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">
-                  {overallStats.avgCompletionRate}%
-                </p>
-              </div>
-              <Target size={32} className="text-indigo-600 opacity-50" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Completed Tasks</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">
-                  {overallStats.totalCompleted}
-                </p>
-              </div>
-              <CheckCircle size={32} className="text-green-600 opacity-50" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-red-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Overdue Tasks</p>
-                <p className="text-3xl font-bold text-red-600 mt-1">
-                  {overallStats.overdueTasks}
-                </p>
-              </div>
-              <AlertCircle size={32} className="text-red-600 opacity-50" />
-            </div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 mb-10">
+          <OverallStats
+            title="Total Tasks"
+            value={overallStats.totalTasks}
+            icon={ClipboardList}
+            gradient="from-indigo-500 to-purple-600"
+          />
+          <OverallStats
+            title="Total Students"
+            value={overallStats.totalStudents}
+            icon={Users}
+            gradient="from-blue-500 to-cyan-500"
+          />
+          <OverallStats
+            title="Avg Completion"
+            value={`${overallStats.avgCompletionRate}%`}
+            icon={Target}
+            gradient="from-pink-500 to-rose-500"
+            progress={overallStats.avgCompletionRate}
+          />
+          <OverallStats
+            title="Completed Tasks"
+            value={overallStats.totalCompleted}
+            icon={CheckCircle}
+            gradient="from-emerald-500 to-green-600"
+          />
+          <OverallStats
+            title="Overdue Tasks"
+            value={overallStats.overdueTasks}
+            icon={AlertCircle}
+            gradient="from-orange-500 to-red-600"
+          />
         </div>
 
         {/* Analytics Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <SimplePieChart
-            data={statusDistribution}
-            title="Task Status Distribution"
-          />
-          <SimpleBarChart
-            data={
-              leaderboardChartData.length > 0
-                ? leaderboardChartData
-                : [{ label: "No data", value: 0 }]
-            }
-            title="Top Performers (Completion Rate %)"
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-10">
+          <div className="w-full min-w-0">
+            <SimplePieChart
+              data={statusDistribution}
+              title="Task Status Distribution"
+            />
+          </div>
+          <div className="w-full min-w-0">
+            <SimpleBarChart
+              data={
+                leaderboardChartData.length > 0
+                  ? leaderboardChartData
+                  : [{ label: "No data", value: 0 }]
+              }
+              title="Top Performers (Completion Rate %)"
+            />
+          </div>
         </div>
 
         {/* Performance Leaderboard */}
-        {leaderboard.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Award size={24} className="text-indigo-600" />
-              Performance Leaderboard
-            </h3>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Rank
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Student
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Completed
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Total
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Completion Rate
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {leaderboard.map((student, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm font-bold ${
-                            index === 0
-                              ? "bg-yellow-100 text-yellow-700"
-                              : index === 1
-                                ? "bg-gray-100 text-gray-700"
-                                : index === 2
-                                  ? "bg-orange-100 text-orange-700"
-                                  : "bg-gray-50 text-gray-600"
-                          }`}
-                        >
-                          #{index + 1}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 font-medium text-gray-800">
-                        {student.name}
-                      </td>
-                      <td className="px-4 py-3 text-green-600 font-semibold">
-                        {student.completed}
-                      </td>
-                      <td className="px-4 py-3 text-gray-600">
-                        {student.total}
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2">
-                            <div
-                              className="bg-indigo-600 h-2 rounded-full"
-                              style={{ width: `${student.completionRate}%` }}
-                            />
-                          </div>
-                          <span className="text-sm font-semibold text-gray-800 w-12 text-right">
-                            {student.completionRate}%
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+        <LeaderboardTable data={leaderboard} title="Student Performance" />
 
         {/* Overdue Tasks Alert */}
         {overallStats.overdueTasks > 0 && (
@@ -403,25 +283,32 @@ export default function ExpertDashboard() {
         )}
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl p-4 shadow-lg mb-6 flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
+        <div className="bg-white/70 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-gray-100 mb-8 flex flex-col sm:flex-row gap-3 sm:gap-5 items-stretch sm:items-center justify-between transition-all duration-300">
+          {/* Search Box */}
+          <div className="relative flex-1 w-full min-w-0">
+            <Search
+              size={18}
+              className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition"
+            />
             <input
               type="text"
               placeholder="Search tasks..."
-              className="w-full border rounded-lg p-2 px-4 focus:ring-2 focus:ring-indigo-400"
+              className="w-full pl-10 sm:pl-11 pr-3 sm:pr-4 py-2 sm:py-3 rounded-2xl border border-gray-200 bg-white/80 focus:ring-2 focus:ring-indigo-400 focus:outline-none shadow-sm transition-all duration-300 text-sm sm:text-base"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex gap-2">
+
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap gap-2 sm:gap-3 mt-2 sm:mt-0">
             {["all", "completed", "in-progress", "pending"].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
                   filter === f
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:scale-105"
                 }`}
               >
                 {f.charAt(0).toUpperCase() + f.slice(1).replace("-", " ")}
@@ -431,287 +318,48 @@ export default function ExpertDashboard() {
         </div>
 
         {/* Task Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           {filteredTasks.map((task) => (
-            <div
+            <TaskCard
               key={task._id}
-              className="bg-white/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-              onClick={() => handleTaskClick(task._id)}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-800 flex-1">
-                  {task.title}
-                </h2>
-                <span
-                  className={`px-2 py-1 rounded text-xs font-medium ${
-                    task.priority === "high"
-                      ? "bg-red-100 text-red-700"
-                      : task.priority === "medium"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-blue-100 text-blue-700"
-                  }`}
-                >
-                  {task.priority?.toUpperCase() || "MEDIUM"}
-                </span>
-              </div>
-
-              <p className="text-gray-500 text-sm mb-4 flex items-center gap-2">
-                <Calendar size={14} />
-                {new Date(task.dueDate).toLocaleDateString()}
-              </p>
-
-              {/* Progress Bar */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="text-gray-600">Progress</span>
-                  <span className="font-semibold text-indigo-600">
-                    {task.progress?.completionRate || 0}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-indigo-600 h-2 rounded-full transition-all"
-                    style={{ width: `${task.progress?.completionRate || 0}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                <div className="text-center p-2 bg-green-50 rounded-lg">
-                  <div className="text-lg font-bold text-green-600">
-                    {task.progress?.completed || 0}
-                  </div>
-                  <div className="text-xs text-gray-600">Completed</div>
-                </div>
-                <div className="text-center p-2 bg-blue-50 rounded-lg">
-                  <div className="text-lg font-bold text-blue-600">
-                    {task.progress?.inProgress || 0}
-                  </div>
-                  <div className="text-xs text-gray-600">In Progress</div>
-                </div>
-                <div className="text-center p-2 bg-gray-50 rounded-lg">
-                  <div className="text-lg font-bold text-gray-600">
-                    {task.progress?.pending || 0}
-                  </div>
-                  <div className="text-xs text-gray-600">Pending</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 text-gray-600 text-sm">
-                <Users size={16} />
-                {task.assignedTo?.length || 0} Students
-              </div>
-
-              <button className="mt-4 w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-                <Eye size={16} />
-                View Details
-              </button>
-            </div>
+              task={task}
+              onClick={handleTaskClick}
+              onView={handleTaskClick}
+            />
           ))}
         </div>
 
+        {/* No Tasks Found */}
         {filteredTasks.length === 0 && (
-          <div className="text-center py-12 bg-white rounded-2xl shadow-lg">
-            <ClipboardList size={48} className="mx-auto text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              No tasks found
-            </h3>
-            <p className="text-gray-500">
-              {searchTerm || filter !== "all"
-                ? "Try adjusting your filters"
-                : "Create your first task to get started"}
-            </p>
+          <div className="relative text-center py-12 sm:py-16 px-4 sm:px-6 bg-white/80 backdrop-blur-xl border border-gray-100 rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50 opacity-40 pointer-events-none rounded-3xl" />
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="bg-indigo-100 p-5 rounded-full mb-4 sm:mb-6 animate-pulse">
+                <ClipboardList size={42} className="text-indigo-600" />
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 sm:mb-3">
+                No tasks found
+              </h3>
+              <p className="text-gray-500 max-w-xs sm:max-w-md text-sm sm:text-base">
+                {searchTerm || filter !== "all"
+                  ? "Try adjusting your filters to find what you're looking for."
+                  : "Create your first task to get started."}
+              </p>
+            </div>
           </div>
         )}
       </div>
 
       {/* Task Detail Modal */}
-      {selectedTask && taskDetails && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                    {taskDetails.task.title}
-                  </h2>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={16} />
-                      <span>
-                        Due:{" "}
-                        {new Date(taskDetails.task.dueDate).toLocaleString()}
-                      </span>
-                    </div>
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-medium ${
-                        taskDetails.task.priority === "high"
-                          ? "bg-red-100 text-red-700"
-                          : taskDetails.task.priority === "medium"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      {taskDetails.task.priority?.toUpperCase() || "MEDIUM"}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    setSelectedTask(null);
-                    setTaskDetails(null);
-                  }}
-                  className="text-gray-500 hover:text-red-500 transition"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              {/* Analytics */}
-              <div className="grid grid-cols-4 gap-4 mb-6">
-                <div className="bg-indigo-50 p-4 rounded-lg text-center">
-                  <div className="text-2xl font-bold text-indigo-600">
-                    {taskDetails.analytics.total}
-                  </div>
-                  <div className="text-sm text-gray-600">Total Students</div>
-                </div>
-                <div className="bg-green-50 p-4 rounded-lg text-center">
-                  <div className="text-2xl font-bold text-green-600">
-                    {taskDetails.analytics.completed}
-                  </div>
-                  <div className="text-sm text-gray-600">Completed</div>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-lg text-center">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {taskDetails.analytics.inProgress}
-                  </div>
-                  <div className="text-sm text-gray-600">In Progress</div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg text-center">
-                  <div className="text-2xl font-bold text-gray-600">
-                    {taskDetails.analytics.pending}
-                  </div>
-                  <div className="text-sm text-gray-600">Pending</div>
-                </div>
-              </div>
-
-              {/* Description */}
-              {taskDetails.task.description && (
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Description
-                  </h3>
-                  <p className="text-gray-600 whitespace-pre-wrap">
-                    {taskDetails.task.description}
-                  </p>
-                </div>
-              )}
-
-              {/* Student Progress Table */}
-              <div className="mb-6">
-                <h3 className="font-semibold text-gray-800 mb-4">
-                  Student Progress
-                </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-gray-50">
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                          Student
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                          Status
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                          Submitted
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                          Score
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {taskDetails.assignments.map((assignment) => (
-                        <tr key={assignment._id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3">
-                            <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-semibold">
-                                {assignment.student?.name?.charAt(0) || "?"}
-                              </div>
-                              <div>
-                                <div className="font-medium text-gray-800">
-                                  {assignment.student?.name || "Unknown"}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {assignment.student?.email}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`px-2 py-1 rounded text-xs font-medium ${
-                                assignment.status === "Completed"
-                                  ? "bg-green-100 text-green-700"
-                                  : assignment.status === "In Progress"
-                                    ? "bg-blue-100 text-blue-700"
-                                    : "bg-gray-100 text-gray-700"
-                              }`}
-                            >
-                              {assignment.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
-                            {assignment.submittedAt
-                              ? new Date(
-                                  assignment.submittedAt,
-                                ).toLocaleDateString()
-                              : "-"}
-                          </td>
-                          <td className="px-4 py-3">
-                            {assignment.score !== undefined ? (
-                              <span className="font-semibold text-indigo-600">
-                                {assignment.score}/100
-                              </span>
-                            ) : (
-                              <span className="text-gray-400">-</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-3">
-                            {assignment.status === "Completed" && (
-                              <GradeInput
-                                assignmentId={assignment._id}
-                                currentScore={assignment.score}
-                                currentFeedback={assignment.feedback}
-                                onGradeUpdate={handleGradeUpdate}
-                              />
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <button
-                onClick={() => {
-                  setSelectedTask(null);
-                  setTaskDetails(null);
-                }}
-                className="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <TaskDetailsModal
+        isOpen={!!selectedTask}
+        taskDetails={taskDetails}
+        onClose={() => {
+          setSelectedTask(null);
+          setTaskDetails(null);
+        }}
+        onGradeUpdate={handleGradeUpdate}
+      />
 
       {/* Create Task Modal */}
       {showModal && (
@@ -723,75 +371,6 @@ export default function ExpertDashboard() {
             setShowModal(false);
           }}
         />
-      )}
-    </div>
-  );
-}
-
-// Grade Input Component
-function GradeInput({
-  assignmentId,
-  currentScore,
-  currentFeedback,
-  onGradeUpdate,
-}) {
-  const [score, setScore] = useState(currentScore || "");
-  const [feedback, setFeedback] = useState(currentFeedback || "");
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleSubmit = () => {
-    if (score !== "" && score >= 0 && score <= 100) {
-      onGradeUpdate(assignmentId, parseInt(score), feedback);
-      setIsEditing(false);
-    }
-  };
-
-  if (!isEditing && currentScore !== undefined) {
-    return (
-      <button
-        onClick={() => setIsEditing(true)}
-        className="text-indigo-600 hover:text-indigo-700 text-sm"
-      >
-        Edit Grade
-      </button>
-    );
-  }
-
-  return (
-    <div className="flex gap-2">
-      <input
-        type="number"
-        min="0"
-        max="100"
-        value={score}
-        onChange={(e) => setScore(e.target.value)}
-        className="w-16 border rounded px-2 py-1 text-sm"
-        placeholder="Score"
-      />
-      <input
-        type="text"
-        value={feedback}
-        onChange={(e) => setFeedback(e.target.value)}
-        className="flex-1 border rounded px-2 py-1 text-sm"
-        placeholder="Feedback"
-      />
-      <button
-        onClick={handleSubmit}
-        className="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700"
-      >
-        Save
-      </button>
-      {isEditing && (
-        <button
-          onClick={() => {
-            setIsEditing(false);
-            setScore(currentScore || "");
-            setFeedback(currentFeedback || "");
-          }}
-          className="bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300"
-        >
-          Cancel
-        </button>
       )}
     </div>
   );

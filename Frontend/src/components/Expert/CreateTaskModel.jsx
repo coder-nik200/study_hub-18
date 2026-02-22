@@ -53,7 +53,7 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
     (student) =>
       !selectedStudents.find((s) => s._id === student._id) &&
       (student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        student.email.toLowerCase().includes(searchTerm.toLowerCase()))
+        student.email.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
   // Add student to selection
@@ -97,7 +97,7 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (selectedStudents.length === 0) {
       toast.error("Please select at least one student");
       return;
@@ -140,41 +140,53 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-2 sm:px-0">
       {/* Overlay */}
       <div
         onClick={onClose}
         className={`absolute inset-0 transition-all duration-500 backdrop-blur-md
-        ${show ? "bg-black/40 opacity-100" : "bg-black/0 opacity-0"}`}
+      ${show ? "bg-black/50 opacity-100" : "bg-black/0 opacity-0"}`}
       />
 
       {/* Modal */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative bg-white rounded-3xl shadow-2xl
-        p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto
-        transform transition-all duration-500
-        ${
-          show ? "translate-y-0 opacity-100" : "-translate-y-[120%] opacity-0"
-        }`}
+        className={`relative w-full sm:max-w-3xl
+      bg-white/95 backdrop-blur-xl border border-white/40
+      rounded-t-3xl sm:rounded-3xl
+      shadow-[0_20px_60px_rgba(0,0,0,0.25)]
+      p-4 sm:p-6 md:p-10
+      max-h-[95vh] overflow-y-auto no-scrollbar
+      transform transition-all duration-500
+      ${
+        show
+          ? "translate-y-0 opacity-100"
+          : "translate-y-full sm:-translate-y-[120%] opacity-0"
+      }`}
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition"
-        >
-          <X size={22} />
-        </button>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Create Task
+          </h2>
 
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Create Task</h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-red-100 transition"
+          >
+            <X size={22} className="text-gray-600 hover:text-red-500" />
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           {/* Title */}
           <div>
-            <label className="block font-medium mb-1">Task Title *</label>
+            <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
+              Task Title *
+            </label>
             <input
               type="text"
-              className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-200 rounded-2xl p-2 sm:p-3 focus:ring-2 focus:ring-indigo-400 transition shadow-sm text-sm sm:text-base"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -184,32 +196,39 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
 
           {/* Description */}
           <div>
-            <label className="block font-medium mb-1">Description</label>
+            <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
+              Description
+            </label>
             <textarea
               rows="4"
-              className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-200 rounded-2xl p-2 sm:p-3 focus:ring-2 focus:ring-indigo-400 transition shadow-sm resize-none text-sm sm:text-base"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter task description"
             />
           </div>
 
-          {/* Due Date and Priority */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Due Date & Priority */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label className="block font-medium mb-1">Due Date *</label>
+              <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
+                Due Date *
+              </label>
               <input
                 type="datetime-local"
-                className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-indigo-400"
+                className="w-full border border-gray-200 rounded-2xl p-2 sm:p-3 focus:ring-2 focus:ring-indigo-400 transition shadow-sm text-sm sm:text-base"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
                 required
               />
             </div>
+
             <div>
-              <label className="block font-medium mb-1">Priority</label>
+              <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
+                Priority
+              </label>
               <select
-                className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-indigo-400"
+                className="w-full border border-gray-200 rounded-2xl p-2 sm:p-3 focus:ring-2 focus:ring-indigo-400 transition shadow-sm text-sm sm:text-base"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
               >
@@ -222,51 +241,54 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
 
           {/* Student Selection */}
           <div className="relative">
-            <label className="block font-medium mb-1">Assign To Students *</label>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search students by name or email..."
-                className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-indigo-400"
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setShowStudentDropdown(true);
-                }}
-                onFocus={() => setShowStudentDropdown(true)}
-              />
-              {showStudentDropdown && filteredStudents.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                  {filteredStudents.map((student) => (
-                    <button
-                      key={student._id}
-                      type="button"
-                      onClick={() => addStudent(student)}
-                      className="w-full text-left px-4 py-2 hover:bg-indigo-50 transition"
-                    >
-                      <div className="font-medium">{student.name}</div>
-                      <div className="text-sm text-gray-500">{student.email}</div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
+              Assign To Students *
+            </label>
 
-            {/* Selected Students */}
+            <input
+              type="text"
+              placeholder="Search students..."
+              className="w-full border border-gray-200 rounded-2xl p-2 sm:p-3 focus:ring-2 focus:ring-indigo-400 transition shadow-sm text-sm sm:text-base"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowStudentDropdown(true);
+              }}
+              onFocus={() => setShowStudentDropdown(true)}
+            />
+
+            {showStudentDropdown && filteredStudents.length > 0 && (
+              <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-2xl shadow-xl max-h-40 sm:max-h-48 overflow-y-auto no-scrollbar text-sm">
+                {filteredStudents.map((student) => (
+                  <button
+                    key={student._id}
+                    type="button"
+                    onClick={() => addStudent(student)}
+                    className="w-full text-left px-3 sm:px-4 py-2 hover:bg-indigo-50 transition"
+                  >
+                    <div className="font-medium">{student.name}</div>
+                    <div className="text-gray-500 text-xs sm:text-sm">
+                      {student.email}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
             {selectedStudents.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3 mt-2 sm:mt-3">
                 {selectedStudents.map((student) => (
                   <span
                     key={student._id}
-                    className="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                    className="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm flex items-center gap-1 sm:gap-2 shadow-sm"
                   >
                     {student.name}
                     <button
                       type="button"
                       onClick={() => removeStudent(student._id)}
-                      className="hover:text-red-600"
+                      className="hover:text-red-500 transition"
                     >
-                      <XCircle size={16} />
+                      <XCircle size={14} />
                     </button>
                   </span>
                 ))}
@@ -276,8 +298,11 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
 
           {/* Attachments */}
           <div>
-            <label className="block font-medium mb-1">Attachments (Optional)</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-4">
+            <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
+              Attachments (Optional)
+            </label>
+
+            <div className="border-2 border-dashed border-indigo-300 rounded-2xl p-4 sm:p-6 text-center hover:bg-indigo-50 transition">
               <input
                 type="file"
                 id="file-upload"
@@ -288,31 +313,31 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
               />
               <label
                 htmlFor="file-upload"
-                className="flex items-center gap-2 cursor-pointer text-indigo-600 hover:text-indigo-700"
+                className="flex flex-col items-center gap-1 sm:gap-2 cursor-pointer text-indigo-600 hover:text-indigo-700 text-sm sm:text-base"
               >
-                <Upload size={20} />
-                <span>Click to upload files</span>
+                <Upload size={24} />
+                <span className="font-medium">Click to upload files</span>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  PDF, DOC, JPG, PNG (Max 10MB each)
+                </p>
               </label>
-              <p className="text-xs text-gray-500 mt-1">
-                PDF, DOC, DOCX, JPG, PNG (Max 10MB each)
-              </p>
             </div>
 
             {/* Attachment List */}
             {attachments.length > 0 && (
-              <div className="mt-3 space-y-2">
+              <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
                 {attachments.map((attachment, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-gray-50 p-2 rounded-lg"
+                    className="flex items-center justify-between bg-indigo-50 border border-indigo-100 p-2 sm:p-3 rounded-xl shadow-sm text-sm sm:text-base"
                   >
-                    <span className="text-sm text-gray-700">{attachment.filename}</span>
+                    <span className="truncate">{attachment.filename}</span>
                     <button
                       type="button"
                       onClick={() => removeAttachment(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-red-500 hover:text-red-700 transition"
                     >
-                      <XCircle size={18} />
+                      <XCircle size={16} />
                     </button>
                   </div>
                 ))}
@@ -324,11 +349,11 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-2xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2.5 sm:py-3 rounded-2xl font-semibold text-sm sm:text-base hover:scale-[1.02] hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                 Assigning...
               </>
             ) : (
