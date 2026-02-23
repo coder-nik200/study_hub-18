@@ -42,7 +42,6 @@ const App = () => {
           className="fixed top-0 left-0 h-2 w-full bg-indigo-500 origin-left z-50"
         />
       </div>
-
       {user ? <AiChatBot /> : null}
 
       <Routes>
