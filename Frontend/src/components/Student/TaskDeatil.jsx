@@ -81,7 +81,7 @@ const TaskDetail = ({ selectedTask, setSelectedTask, refreshTasks }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto no-scrollbar">
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
@@ -106,7 +106,7 @@ const TaskDetail = ({ selectedTask, setSelectedTask, refreshTasks }) => {
                 setSelectedTask(null);
                 setSubmissionText("");
               }}
-              className="p-2 rounded-lg hover:bg-gray-100 transition"
+              className="p-2 rounded-lg text-gray-500 hover:text-red-500 transition"
             >
               <X size={20} />
             </button>

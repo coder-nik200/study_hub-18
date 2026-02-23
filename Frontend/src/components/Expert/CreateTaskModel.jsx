@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Upload, XCircle, AlertCircle } from "lucide-react";
+import { X, Upload, XCircle } from "lucide-react";
 import { getAllStudents, createExpertTask } from "../../api/axios";
 import { toast } from "react-toastify";
 
@@ -129,6 +129,7 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
         onTaskCreated();
       }
       onClose();
+      fetchStudents();
     } catch (error) {
       console.error("Error assigning task:", error);
       toast.error(error.response?.data?.message || "Failed to assign task");
@@ -182,7 +183,7 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
           {/* Title */}
           <div>
             <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
-              Task Title *
+              Task Title
             </label>
             <input
               type="text"
@@ -212,7 +213,7 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
-                Due Date *
+                Due Date
               </label>
               <input
                 type="datetime-local"
@@ -242,7 +243,7 @@ export default function CreateTaskModal({ show, onClose, onTaskCreated }) {
           {/* Student Selection */}
           <div className="relative">
             <label className="block font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">
-              Assign To Students *
+              Assign To Students
             </label>
 
             <input

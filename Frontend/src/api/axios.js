@@ -20,6 +20,7 @@ export const getTaskDetails = (taskId) => api.get(`/tasks/${taskId}`);
 export const getAllStudents = () => api.get("/students");
 export const updateAssignmentGrade = (assignmentId, data) =>
   api.patch(`/assignments/${assignmentId}/grade`, data);
+export const deleteExpertTask = (id) => api.delete(`/expert-tasks/${id}`);
 
 // Task assignments (student task management)
 export const updateTaskStatus = (taskId, data) =>
@@ -37,6 +38,7 @@ export const markAllNotificationsAsRead = () =>
   api.patch("/notifications/read-all");
 export const getUnreadNotificationCount = () =>
   api.get("/notifications/unread-count");
+export const deleteNotification = (id) => api.delete(`/notifications/${id}`);
 
 // Profile
 export const getProfile = () => api.get("/profile");

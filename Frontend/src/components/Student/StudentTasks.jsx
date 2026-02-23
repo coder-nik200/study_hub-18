@@ -87,9 +87,11 @@ export default function StudentTasks() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8 mt-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">My Tasks</h1>
-          <p className="text-gray-600">
+        <div className="mt-6 mb-6">
+          <h1 className="text-3xl sm:text-4xl pb-2 font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
+            My Tasks
+          </h1>
+          <p className="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-lg">
             View and manage tasks assigned by your expert
           </p>
         </div>
@@ -140,8 +142,9 @@ export default function StudentTasks() {
 
               return (
                 <div
+                  onClick={() => setSelectedTask(assignment)}
                   key={assignment._id}
-                  className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-md border border-white/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                  className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-md border border-white/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden cursor-pointer"
                 >
                   {/* Top Gradient Strip */}
                   <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
@@ -227,10 +230,7 @@ export default function StudentTasks() {
 
                     {/* Actions */}
                     <div className="flex gap-3 mt-6">
-                      <button
-                        onClick={() => setSelectedTask(assignment)}
-                        className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2.5 rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow-md"
-                      >
+                      <button className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2.5 rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow-md">
                         <Eye size={16} />
                         View Details
                       </button>

@@ -7,12 +7,8 @@ const {
   getTaskDetails,
   getAllStudents,
   updateAssignmentGrade,
+  deleteTask,
 } = require("../controllers/expertController");
-const {
-  updateTaskStatus,
-  getStudentTaskAssignments,
-  getTaskAssignments,
-} = require("../controllers/taskAssignmentController");
 
 const router = express.Router();
 
@@ -22,10 +18,6 @@ router.get("/expert-tasks", authMiddleware, roleMiddleware(["expert"]), getTasks
 router.get("/tasks/:taskId", authMiddleware, roleMiddleware(["expert"]), getTaskDetails);
 router.get("/students", authMiddleware, roleMiddleware(["expert"]), getAllStudents);
 router.patch("/assignments/:assignmentId/grade", authMiddleware, roleMiddleware(["expert"]), updateAssignmentGrade);
-
-// Task assignment status routes (All authenticated users)
-router.patch("/tasks/:taskId/status", authMiddleware, updateTaskStatus);
-router.get("/student/tasks", authMiddleware, getStudentTaskAssignments);
-router.get("/tasks/:taskId/assignments", authMiddleware, roleMiddleware(["expert"]), getTaskAssignments);
+router.delete("/expert-tasks/:id", authMiddleware, roleMiddleware(["expert"]), deleteTask);
 
 module.exports = router;

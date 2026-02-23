@@ -3,27 +3,17 @@ import {
   PlusCircle,
   Users,
   ClipboardList,
-  ChartColumnDecreasing,
-  TrendingUp,
-  TrendingDown,
-  Clock,
   CheckCircle,
   AlertCircle,
-  Eye,
-  Filter,
-  X,
-  Calendar,
-  Award,
   Target,
   Search,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import CreateTaskModal from "./CreateTaskModel";
 import {
+  deleteExpertTask,
   fetchExpertTasks,
   getTaskDetails,
   updateAssignmentGrade,
-  getTaskAssignments,
 } from "../../api/axios";
 import { toast } from "react-toastify";
 import SimpleBarChart from "../Charts/SimpleBarChart";
@@ -82,6 +72,16 @@ export default function ExpertDashboard() {
     } catch (error) {
       console.error("Error updating grade:", error);
       toast.error("Failed to update grade");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteExpertTask(id);
+      toast.success("Task deleted successfully");
+      fetchTasks(); // refresh list
+    } catch (error) {
+      toast.error("Failed to delete task");
     }
   };
 
@@ -325,6 +325,7 @@ export default function ExpertDashboard() {
               task={task}
               onClick={handleTaskClick}
               onView={handleTaskClick}
+              onDelete={handleDelete}
             />
           ))}
         </div>

@@ -263,10 +263,36 @@ const updateAssignmentGrade = async (req, res) => {
   }
 };
 
+// Delete task assignment
+const deleteTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const expertId = req.user.id;
+
+    const deletedTask = await ExpertTask.findOneAndDelete({
+      _id: id,
+      createdBy: expertId, // security: only delete own task
+    });
+
+    if (!deletedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Also delete related assignments
+    await TaskAssignment.deleteMany({ task: id });
+
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   assignTask,
   getTasksByExpert,
   getTaskDetails,
   getAllStudents,
   updateAssignmentGrade,
+  deleteTask,
 };

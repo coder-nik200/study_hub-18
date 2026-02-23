@@ -113,12 +113,31 @@ const getUnreadCount = async (req, res) => {
     res.status(200).json({ count });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Error fetching notification count",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error fetching notification count",
+      error: error.message,
+    });
+  }
+};
+
+// Delete notification
+const deleteNotification = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const notification = await Notification.findByIdAndDelete(id);
+
+    if (!notification) {
+      return res.status(400).jsoon({ message: "Notificaiton not found" });
+    }
+
+    res.json({ message: "Notificatin deleted successfully" });
+  } catch (err) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error during deleting",
+      error: error.message,
+    });
   }
 };
 
@@ -128,4 +147,5 @@ module.exports = {
   markAsRead,
   markAllAsRead,
   getUnreadCount,
+  deleteNotification,
 };
