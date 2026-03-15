@@ -41,6 +41,7 @@ const LoginPage = ({ isOpen, setIsOpen, openSignup }) => {
       toast.success("Login successful 🎉");
       handleClose();
       navigate("/");
+      setFormData({ email: "", password: "" }); //Null login page
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     } finally {

@@ -11,6 +11,7 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "student",
   });
 
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,17 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
             </button>
 
             {/* CARD */}
-            <div className="bg-white rounded-2xl p-7 shadow-2xl min-h-[480px] flex flex-col justify-center">
+            {/* <div className="bg-white rounded-2xl p-7 shadow-2xl min-h-[480px] flex flex-col justify-center"> */}
+            <div
+              className="bg-white rounded-2xl 
+                w-25rem 
+                max-h-[100vh] 
+                overflow-y-auto 
+                no-scrollbar
+                p-5 sm:p-7 
+                shadow-2xl 
+                flex flex-col justify-center"
+            >
               {/* HEADER */}
               <div className="mb-6 text-center">
                 <h1 className="mb-3 text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -188,6 +199,41 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
                       ) : (
                         <Eye size={16} />
                       )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* ROLE SELECTION */}
+                <div>
+                  <label className="mb-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    <User size={16} /> I am a
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({ ...formData, role: "student" })
+                      }
+                      className={`px-4 py-3 rounded-xl border-2 font-medium transition ${
+                        formData.role === "student"
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                          : "border-slate-300 bg-white text-slate-700 hover:border-indigo-300"
+                      }`}
+                    >
+                      🎓 Student
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({ ...formData, role: "expert" })
+                      }
+                      className={`px-4 py-3 rounded-xl border-2 font-medium transition ${
+                        formData.role === "expert"
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                          : "border-slate-300 bg-white text-slate-700 hover:border-indigo-300"
+                      }`}
+                    >
+                      👨‍🏫 Expert
                     </button>
                   </div>
                 </div>

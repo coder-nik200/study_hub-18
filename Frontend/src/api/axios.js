@@ -7,6 +7,7 @@ const api = axios.create({
 
 export default api;
 
+// Regular tasks (student's own tasks)
 export const createTask = (taskData) => api.post("/tasks", taskData);
 export const getTasks = () => api.get("/tasks");
 export const updateTask = (id, data) => api.put(`/tasks/${id}`, data);

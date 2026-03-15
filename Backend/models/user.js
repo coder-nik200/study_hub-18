@@ -24,12 +24,18 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["student", "admin"],
-      required: true,
+      enum: ["student", "expert"],
+      default: "student",
     },
 
     avatar: {
       type: String, // image URL
+    },
+
+    bio: {
+      type: String,
+      trim: true,
+      maxlength: 500,
     },
   },
   { timestamps: true },
