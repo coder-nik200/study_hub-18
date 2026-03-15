@@ -11,3 +11,41 @@ export const createTask = (taskData) => api.post("/tasks", taskData);
 export const getTasks = () => api.get("/tasks");
 export const updateTask = (id, data) => api.put(`/tasks/${id}`, data);
 export const deleteTask = (id) => api.delete(`/tasks/${id}`);
+
+// Expert task management
+export const createExpertTask = (expertData) => api.post("/assign", expertData);
+// export const fetchExpertTasks = () => api.get("/expert-tasks?page=1&limit=5");
+export const fetchExpertTasks = (page = 1) =>
+  api.get(`/expert-tasks?page=${page}&limit=6`);
+export const getTaskDetails = (taskId) => api.get(`/tasks/${taskId}`);
+export const getAllStudents = () => api.get("/students");
+export const updateAssignmentGrade = (assignmentId, data) =>
+  api.patch(`/assignments/${assignmentId}/grade`, data);
+export const deleteExpertTask = (id) => api.delete(`/expert-tasks/${id}`);
+
+// Task assignments (student task management)
+export const updateTaskStatus = (taskId, data) =>
+  api.patch(`/tasks/${taskId}/status`, data);
+export const getStudentTaskAssignments = () => api.get("/student/tasks");
+export const getTaskAssignments = (taskId) =>
+  api.get(`/tasks/${taskId}/assignments`);
+
+// Notifications
+export const getNotifications = (unreadOnly = false) =>
+  api.get(`/notifications${unreadOnly ? "?unreadOnly=true" : ""}`);
+export const markNotificationAsRead = (notificationId) =>
+  api.patch(`/notifications/${notificationId}/read`);
+export const markAllNotificationsAsRead = () =>
+  api.patch("/notifications/read-all");
+export const getUnreadNotificationCount = () =>
+  api.get("/notifications/unread-count");
+export const deleteNotification = (id) => api.delete(`/notifications/${id}`);
+
+// Profile
+export const getProfile = () => api.get("/profile");
+export const updateProfile = (formData) =>
+  api.put("/profile", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

@@ -49,7 +49,6 @@ const SignupPage = ({ isOpen, setIsOpen, openLogin }) => {
       await api.post("/signup", formData);
       toast.success("Account created successfully 🎉");
       handleClose();
-      // navigate("/");
       navigate("/", { state: { openLogin: true }, replace: true });
     } catch (error) {
       toast.error(error.response?.data?.message || "Signup failed");
