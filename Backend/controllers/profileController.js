@@ -1,23 +1,9 @@
 const User = require("../models/user");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const cloudinary = require("../config/cloudnary");
+const streamifier = require("streamifier");
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = "uploads/avatars";
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `avatar-${req.user.id}-${uniqueSuffix}${path.extname(file.originalname)}`);
-  },
-});
-
+// Multer file filter
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
@@ -26,51 +12,96 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Multer memory storage
+const storage = multer.memoryStorage();
+
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
 });
+
+// Upload image to Cloudinary
+const uploadToCloudinary = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "avatars",
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+};
 
 // Get user profile
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
+
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
-    res.status(200).json({ user });
+
+    res.status(200).json({
+      user,
+    });
   } catch (error) {
     console.error("Error fetching profile:", error);
-    res.status(500).json({ message: "Error fetching profile", error: error.message });
+
+    res.status(500).json({
+      message: "Error fetching profile",
+      error: error.message,
+    });
   }
 };
 
-// Update user profile
+// Update profile
 const updateProfile = async (req, res) => {
   try {
     const { name, bio } = req.body;
     const userId = req.user.id;
 
     const updateData = {};
+
     if (name) updateData.name = name;
     if (bio !== undefined) updateData.bio = bio;
+
     if (req.file) {
-      // Delete old avatar if exists
+      // Get current user
       const user = await User.findById(userId);
-      if (user.avatar && user.avatar.startsWith("uploads/")) {
-        const oldAvatarPath = user.avatar;
-        if (fs.existsSync(oldAvatarPath)) {
-          fs.unlinkSync(oldAvatarPath);
-        }
+
+      // Delete old Cloudinary image
+      if (user?.avatarPublicId) {
+        await cloudinary.uploader.destroy(user.avatarPublicId);
       }
-      updateData.avatar = req.file.path;
+
+      // Upload new image
+      const result = await uploadToCloudinary(req.file.buffer);
+
+      updateData.avatar = result.secure_url;
+      updateData.avatarPublicId = result.public_id;
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-      new: true,
-      runValidators: true,
-    }).select("-password");
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      }
+    ).select("-password");
 
     res.status(200).json({
       message: "Profile updated successfully",
@@ -78,7 +109,11 @@ const updateProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating profile:", error);
-    res.status(500).json({ message: "Error updating profile", error: error.message });
+
+    res.status(500).json({
+      message: "Error updating profile",
+      error: error.message,
+    });
   }
 };
 
@@ -87,4 +122,3 @@ module.exports = {
   updateProfile,
   upload,
 };
-
