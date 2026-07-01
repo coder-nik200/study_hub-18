@@ -111,20 +111,6 @@ Preview the production build:
 ```bash
 npm run preview
 ```
-
----
-
-## 📸 Screenshots
-
-Add screenshots of your application here.
-
-Example:
-
-- ![Home Page](<Screenshot 2026-04-15 150204.png>)
-- ![Calender](<Screenshot 2026-06-28 125025.png>)
-- ![Dashboard](<Screenshot 2026-04-15 150944.png>)
-- ![ChatBot](<Screenshot 2026-04-15 155639.png>)
-
 ---
 
 ## 🤝 Contributing
